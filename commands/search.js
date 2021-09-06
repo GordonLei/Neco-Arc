@@ -5,7 +5,7 @@ const { MessageEmbed } = require("discord.js");
 const fetch = (...args) =>
   import("node-fetch").then(({ default: fetch }) => fetch(...args));
 
-const createEmbed = async (data) => {
+const createEmbed = async (data, query) => {
   //  receive the first result for now
   const firstResult = data.data.Page.media[0];
 
@@ -20,20 +20,42 @@ const createEmbed = async (data) => {
     .setDescription(firstResult.description)
     .setThumbnail(firstResult.coverImage.large)
     .addFields(
-      { name: "Regular field title", value: "Some value here" },
-      { name: "\u200B", value: "\u200B" },
-      { name: "Inline field title", value: "Some value here", inline: true },
-      { name: "Inline field title", value: "Some value here", inline: true }
+      { name: "Type", value: `${firstResult.type}`, inline: true },
+      { name: "Status", value: `${firstResult.status}`, inline: true },
+      {
+        name: "Season",
+        value: `${firstResult.season} ${firstResult.seasonYear}`,
+        inline: true,
+      },
+      { name: "Format", value: `${firstResult.format}`, inline: true },
+      { name: "Episodes", value: `${firstResult.episodes}`, inline: true },
+      {
+        name: "Duration",
+        value: `${firstResult.duration} minutes`,
+        inline: true,
+      },
+      {
+        name: "AniList Score",
+        value: `${firstResult.averageScore} / 100`,
+        inline: true,
+      },
+      {
+        name: "Genres",
+        value: `${firstResult.genres.join(" ")}`,
+        inline: true,
+      }
     )
-    .addField("Inline field title", "Some value here", true)
     .setImage(firstResult.bannerImage)
     .setTimestamp()
-    .setFooter("via AniList APIv2", "");
+    .setFooter(
+      `via AniList APIv2`,
+      "https://raw.githubusercontent.com/GordonLei/Neco-Arc/main/images/profile.png"
+    );
   return embedReply;
 };
 
-//  search the anime by using AniList v2 API
-const searchAnime = async (nameOfWork) => {
+//  search all works by using AniList v2 API
+const searchAll = async (nameOfWork) => {
   const query = `
 query ($id: Int, $page: Int, $perPage: Int, $search: String) {
   Page (page: $page, perPage: $perPage) {
@@ -79,6 +101,8 @@ query ($id: Int, $page: Int, $perPage: Int, $search: String) {
     genres
     synonyms
     siteUrl
+    seasonYear
+    duration
     }
   }
 }
@@ -143,9 +167,12 @@ module.exports = {
     try {
       //  await interaction.deferReply();
       //  search for the anime
-      const data = await searchAnime(interaction.options.getString("name"));
+      const data = await searchAll(interaction.options.getString("name"));
       //  after receiving the data, create the embed
-      const embed = await createEmbed(data);
+      const embed = await createEmbed(
+        data,
+        interaction.options.getString("name")
+      );
       //  await wait(10000);
       //  await interaction.editReply({ embeds: [embed] });
 
