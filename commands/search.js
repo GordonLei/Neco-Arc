@@ -6,11 +6,13 @@ const { MessageEmbed, MessageActionRow, MessageButton } = require("discord.js");
 //  counter for what result number you are currently at
 let queryResultNumber = 0;
 let maxResults = 0;
+const DELETE_QUERY = -1;
+const SAVE_QUERY = -2;
 
 const fetch = (...args) =>
   import("node-fetch").then(({ default: fetch }) => fetch(...args));
 
-const createEmbed = async (data, queryNumber = 0) => {
+const createEmbed = async (data, queryNumber = 0, optionFlag = 0) => {
   const embedReply = new MessageEmbed();
   try {
     //  check if data exists
@@ -23,9 +25,10 @@ const createEmbed = async (data, queryNumber = 0) => {
           `via AniList APIv2`,
           "https://raw.githubusercontent.com/GordonLei/Neco-Arc/main/images/profile.png"
         );
-    } else if (queryNumber === -1) {
+    } else if (optionFlag === DELETE_QUERY) {
       embedReply
         .setDescription("Deleted query result")
+        .setColor("#E3242B")
         .setTimestamp()
         .setFooter(
           `via AniList APIv2`,
@@ -41,8 +44,13 @@ const createEmbed = async (data, queryNumber = 0) => {
       //  console.log(data.data.Page.media[0].title);
 
       //  create the embed and return it with the necessary fields
+
+      if (optionFlag === SAVE_QUERY) {
+        embedReply.setColor("#00A86B");
+      } else {
+        embedReply.setColor("#0099ff");
+      }
       embedReply
-        .setColor("#0099ff")
         .setTitle(firstResult.title.romaji || "null")
         .setURL(firstResult.siteUrl || "null")
         .setDescription(firstResult.description || "null")
@@ -223,11 +231,12 @@ const buttonLogic = async (interaction, data) => {
   collector.on("collect", async (i) => {
     if (i.customId === "save") {
       queryResultNumber = 0;
-      await i.update({ components: [] });
+      const embed = await createEmbed(data, queryResultNumber, SAVE_QUERY);
+      await i.update({ embeds: [embed], components: [] });
       collector.stop();
     } else if (i.customId === "delete") {
       queryResultNumber = 0;
-      const embed = await createEmbed(data, -1);
+      const embed = await createEmbed(data, queryResultNumber, DELETE_QUERY);
       await i.update({ embeds: [embed], components: [] });
       collector.stop();
     } else if (i.customId === "left") {
