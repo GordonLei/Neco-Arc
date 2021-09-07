@@ -1,56 +1,113 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
-const { MessageEmbed } = require("discord.js");
+const { MessageEmbed, MessageActionRow, MessageButton } = require("discord.js");
+//  const clientId = process.env.clientId;
 //  const wait = require("util").promisify(setTimeout);
+
+//  counter for what result number you are currently at
+let queryResultNumber = 0;
+let maxResults = 0;
 
 const fetch = (...args) =>
   import("node-fetch").then(({ default: fetch }) => fetch(...args));
 
-const createEmbed = async (data, query) => {
-  //  receive the first result for now
-  const firstResult = data.data.Page.media[0];
+const createEmbed = async (data, queryNumber = 0) => {
+  const embedReply = new MessageEmbed();
+  try {
+    //  check if data exists
+    console.log("check if the data exists", data);
+    if (maxResults === 0) {
+      embedReply
+        .setDescription("No results")
+        .setTimestamp()
+        .setFooter(
+          `via AniList APIv2`,
+          "https://raw.githubusercontent.com/GordonLei/Neco-Arc/main/images/profile.png"
+        );
+    } else if (queryNumber === -1) {
+      embedReply
+        .setDescription("Deleted query result")
+        .setTimestamp()
+        .setFooter(
+          `via AniList APIv2`,
+          "https://raw.githubusercontent.com/GordonLei/Neco-Arc/main/images/profile.png"
+        );
+    }
+    //  if data exists, create appropriate embed
+    else {
+      //  receive the first result for now
+      const firstResult = data.data.Page.media[queryNumber];
 
-  //  console.log("description", firstResult.description);
-  //  console.log(data.data.Page.media[0].title);
+      //  console.log("description", firstResult.description);
+      //  console.log(data.data.Page.media[0].title);
 
-  //  create the embed and return it with the necessary fields
-  const embedReply = new MessageEmbed()
-    .setColor("#0099ff")
-    .setTitle(firstResult.title.romaji)
-    .setURL(firstResult.siteUrl)
-    .setDescription(firstResult.description)
-    .setThumbnail(firstResult.coverImage.large)
-    .addFields(
-      { name: "Type", value: `${firstResult.type}`, inline: true },
-      { name: "Status", value: `${firstResult.status}`, inline: true },
-      {
-        name: "Season",
-        value: `${firstResult.season} ${firstResult.seasonYear}`,
-        inline: true,
-      },
-      { name: "Format", value: `${firstResult.format}`, inline: true },
-      { name: "Episodes", value: `${firstResult.episodes}`, inline: true },
-      {
-        name: "Duration",
-        value: `${firstResult.duration} minutes`,
-        inline: true,
-      },
-      {
-        name: "AniList Score",
-        value: `${firstResult.averageScore} / 100`,
-        inline: true,
-      },
-      {
-        name: "Genres",
-        value: `${firstResult.genres.join(" ")}`,
-        inline: true,
-      }
-    )
-    .setImage(firstResult.bannerImage)
-    .setTimestamp()
-    .setFooter(
-      `via AniList APIv2`,
-      "https://raw.githubusercontent.com/GordonLei/Neco-Arc/main/images/profile.png"
-    );
+      //  create the embed and return it with the necessary fields
+      embedReply
+        .setColor("#0099ff")
+        .setTitle(firstResult.title.romaji || "null")
+        .setURL(firstResult.siteUrl || "null")
+        .setDescription(firstResult.description || "null")
+        .setThumbnail(firstResult.coverImage.large || "null")
+        .addFields(
+          {
+            name: "Type",
+            value: `${firstResult.type || "null"}`,
+            inline: true,
+          },
+          {
+            name: "Status",
+            value: `${firstResult.status || "null"}`,
+            inline: true,
+          },
+          {
+            name: "Season",
+            value: `${firstResult.season || "null"} ${
+              firstResult.seasonYear || "null"
+            }`,
+            inline: true,
+          },
+          {
+            name: "Format",
+            value: `${firstResult.format || "null"}`,
+            inline: true,
+          },
+          {
+            name: "Episodes",
+            value: `${firstResult.episodes || "null"}`,
+            inline: true,
+          },
+          {
+            name: "Duration",
+            value: `${firstResult.duration || "null"} minutes`,
+            inline: true,
+          },
+          {
+            name: "AniList Score",
+            value: `${firstResult.averageScore || "null"} / 100`,
+            inline: true,
+          },
+          {
+            name: "Genres",
+            value: `${firstResult.genres.join(" ") || "null"}`,
+            inline: true,
+          }
+        )
+        .setImage(firstResult.bannerImage)
+        .setTimestamp()
+        .setFooter(
+          `via AniList APIv2`,
+          "https://raw.githubusercontent.com/GordonLei/Neco-Arc/main/images/profile.png"
+        );
+    }
+  } catch (error) {
+    console.log(error);
+    embedReply
+      .setDescription("No results")
+      .setTimestamp()
+      .setFooter(
+        `via AniList APIv2`,
+        "https://raw.githubusercontent.com/GordonLei/Neco-Arc/main/images/profile.png"
+      );
+  }
   return embedReply;
 };
 
@@ -111,7 +168,7 @@ query ($id: Int, $page: Int, $perPage: Int, $search: String) {
   const variables = {
     search: nameOfWork,
     page: 1,
-    perPage: 3,
+    perPage: 10,
   };
 
   const url = "https://graphql.anilist.co",
@@ -140,6 +197,7 @@ query ($id: Int, $page: Int, $perPage: Int, $search: String) {
 
   function handleData(data) {
     console.log(data);
+    maxResults = data.data.Page.media.length;
     return data;
   }
 
@@ -148,6 +206,91 @@ query ($id: Int, $page: Int, $perPage: Int, $search: String) {
     console.error(error);
     return {};
   }
+};
+
+const buttonLogic = async (interaction, data) => {
+  const filter = (i) =>
+    i.customId === "save" ||
+    i.customId === "delete" ||
+    i.customId === "left" ||
+    i.customId === "right"; /*  && i.user.id === clientId */
+
+  const collector = interaction.channel.createMessageComponentCollector({
+    filter,
+    time: 15000,
+  });
+
+  collector.on("collect", async (i) => {
+    if (i.customId === "save") {
+      queryResultNumber = 0;
+      await i.update({ components: [] });
+      collector.stop();
+    } else if (i.customId === "delete") {
+      queryResultNumber = 0;
+      const embed = await createEmbed(data, -1);
+      await i.update({ embeds: [embed], components: [] });
+      collector.stop();
+    } else if (i.customId === "left") {
+      queryResultNumber -= 1;
+      console.log(queryResultNumber);
+      const embed = await createEmbed(data, queryResultNumber);
+      const row = createButtonRow(queryResultNumber);
+      collector.resetTimer();
+      console.log("time: ", collector.time);
+      await i.update({ embeds: [embed], components: [row] });
+    } else if (i.customId === "right") {
+      queryResultNumber += 1;
+      console.log(queryResultNumber);
+      const embed = await createEmbed(data, queryResultNumber);
+      const row = createButtonRow(queryResultNumber);
+      collector.resetTimer();
+      console.log("time: ", collector.time);
+      await i.update({ embeds: [embed], components: [row] });
+    } else {
+      await i.update({ components: [] });
+    }
+  });
+
+  collector.on("end", async (collected) => {
+    queryResultNumber = 0;
+    console.log(`Collected ${collected.size} items`);
+  });
+};
+
+const createButtonRow = (queryNumber) => {
+  const buttonRow = new MessageActionRow();
+  if (queryNumber) {
+    buttonRow.addComponents(
+      new MessageButton()
+        .setCustomId("left")
+        .setLabel("Left")
+        .setStyle("SECONDARY")
+    );
+  }
+  if (queryNumber + 1 < maxResults) {
+    buttonRow.addComponents(
+      new MessageButton()
+        .setCustomId("right")
+        .setLabel("Right")
+        .setStyle("SECONDARY")
+    );
+  }
+  if (maxResults > 1) {
+    buttonRow.addComponents(
+      new MessageButton()
+        .setCustomId("save")
+        .setLabel("save")
+        .setStyle("SUCCESS")
+        .setEmoji("440700482672132096"),
+      new MessageButton()
+        .setCustomId("delete")
+        .setLabel("delete")
+        .setStyle("DANGER")
+        .setEmoji("440700481627750401")
+    );
+  }
+
+  return buttonRow;
 };
 
 //  this part executes the command
@@ -169,15 +312,21 @@ module.exports = {
       //  search for the anime
       const data = await searchAll(interaction.options.getString("name"));
       //  after receiving the data, create the embed
-      const embed = await createEmbed(
-        data,
-        interaction.options.getString("name")
-      );
+      const embed = await createEmbed(data, queryResultNumber);
       //  await wait(10000);
       //  await interaction.editReply({ embeds: [embed] });
 
+      //  add the buttons to the reply
+      const row = createButtonRow(queryResultNumber);
       //  Neco-Arc replies with the embed
-      await interaction.reply({ embeds: [embed] });
+      if (maxResults <= 1) {
+        await interaction.reply({ embeds: [embed] });
+      } else {
+        await interaction.reply({ embeds: [embed], components: [row] });
+      }
+
+      //  implement button logic
+      await buttonLogic(interaction, data);
     } catch (error) {
       console.log(error);
     }
