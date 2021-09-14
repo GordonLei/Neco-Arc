@@ -68,9 +68,8 @@ const createEmbed = async (data, queryNumber = 0, optionFlag = 0) => {
           },
           {
             name: "Season",
-            value: `${firstResult.season || "null"} ${
-              firstResult.seasonYear || "null"
-            }`,
+            value: `${firstResult.season || "null"} ${firstResult.seasonYear || "null"
+              }`,
             inline: true,
           },
           {
@@ -262,6 +261,7 @@ const buttonLogic = async (interaction, data) => {
 
   collector.on("end", async (collected) => {
     queryResultNumber = 0;
+    console.log(collected);
     console.log(`Collected ${collected.size} items`);
   });
 };
