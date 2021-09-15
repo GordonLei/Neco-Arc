@@ -1,18 +1,122 @@
 [
     {
-        "name": "example name 1",
-        "definition": "example definition 1"
+        "name": "abstain",
+        "definition": "to hold back oneself voluntarily"
     },
     {
-        "name": "example name 2",
-        "definition": "example definition 2"
+        "name": "adulterate",
+        "definition": "to debase or make impure by adding inferior materials"
     },
     {
-        "name": "example name 3",
-        "definition": "example definition 3"
+        "name": "anomaly",
+        "definition": "a deviation from the common rule"
     },
     {
-        "name": "example name 4",
-        "definition": "example definition 4"
+        "name": "apathy",
+        "definition": "absence of passion, emotion, or excitement; lack of interest"
+    },
+    {
+        "name": "assuage",
+        "definition": "to make milder or less severe; to appease/soothe"
+    },
+    {
+        "name": "capricious",
+        "definition": "subject to, led by, or indicative of a sudden, odd notion or unpredictable change; erratic"
+    },
+    {
+        "name": "corroborate",
+        "definition": "to make certain; to confirm"
+    },
+    {
+        "name": "desiccate",
+        "definition": "to dry up"
+    },
+    {
+        "name": "engender",
+        "definition": "to produce or cause"
+    },
+    {
+        "name": "enigma",
+        "definition": "a puzzling or inexplicable occurrence or situation:"
+    },
+    {
+        "name": "ephemeral",
+        "definition": "lasting a very short time"
+    },
+    {
+        "name": "equivocal",
+        "definition": "allowing the possibility of several different meanings; of doubtful nature"
+    },
+    {
+        "name": "erudite",
+        "definition": "characterized by great knowledge; learned or scholarly"
+    },
+    {
+        "name": "fervid",
+        "definition": "heated or vehement in spirit, enthusiasm, etc."
+    },
+    {
+        "name": "gullible",
+        "definition": "easily deceived or cheated"
+    },
+    {
+        "name": "homogeneous",
+        "definition": "composed of parts or elements that are all of the same kind"
+    },
+    {
+        "name": "laconic",
+        "definition": "using few words; expressing much in few words; concise"
+    },
+    {
+        "name": "laudable",
+        "definition": "deserving praise; praiseworthy; commendable:"
+    },
+    {
+        "name": "loquacious",
+        "definition": "talking or tending to talk much or freely; talkative; chattering; babbling; garrulous; characterized by excessive talk; wordy:"
+    },
+    {
+        "name": "lucid",
+        "definition": "easily understood; completely intelligible or comprehensible:"
+    },
+    {
+        "name": "mitigate",
+        "definition": "to lessen in force"
+    },
+    {
+        "name": "opaque",
+        "definition": "not transparent or translucent; impenetrable to light"
+    },
+    {
+        "name": "pedant",
+        "definition": "one who is unimaginative or who unduly emphasizes minutiae in the presentation or use of knowledge; one who makes a show of knowledge"
+    },
+    {
+        "name": "placate",
+        "definition": "to appease or pacify, especially by concessions or conciliatory gestures"
+    },
+    {
+        "name": "pragmatic",
+        "definition": "of or relating to a practical point of view or practical considerations."
+    },
+    {
+        "name": "precipitate",
+        "definition": "to hasten the occurrence of; bring about prematurely, hastily, or suddenly"
+    },
+    {
+        "name": "proprietary ",
+        "definition": "pertaining to property or ownership"
+    },
+    {
+        "name": "vacillate",
+        "definition": "to waver in mind or opinion; be indecisive or irresolute"
+    },
+    {
+        "name": "volatile",
+        "definition": "changeable; mercurial; flighty"
+    },
+    {
+        "name": "zeal",
+        "definition": "fervor for a person, cause, or object; eager desire or endeavor; enthusiastic diligence; ardor"
     }
 ]
