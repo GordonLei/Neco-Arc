@@ -214,6 +214,9 @@ const buttonLogic = async (interaction, random_word, choices) => {
 
 
     collector.on("end", async (collected) => {
+        console.log(collected);
+        const new_embed = await createEmbed(random_word, choices, 3);
+        console.log(interaction);
         console.log(`Collected ${collected.size} items`);
     });
 };
