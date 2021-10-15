@@ -1,7 +1,7 @@
 /*  jshint esversion: 8 */
 
 const { SlashCommandBuilder } = require("@discordjs/builders");
-const { MessageEmbed, MessageActionRow, MessageButton } = require("discord.js");
+const { MessageEmbed, MessageActionRow, MessageButton, Message } = require("discord.js");
 const fs = require('fs');
 
 const rawdata = fs.readFileSync('GREvocab.json');
@@ -87,6 +87,21 @@ const createEmbed = async (random_word, choices, optionFlag = 0) => {
                 .setColor("#00A86B")
                 .setDescription("game is done");
             break;
+        case 4:
+            embedReply
+                .setColor("#E3242B")
+                .addFields(
+                    {
+                        name: "Answer:",
+                        value: `${choices[0]}`,
+
+                    },
+                    {
+                        name: "You selected",
+                        value: "No Answer",
+                        inline: false,
+                    });
+            break;
 
     }
     embedReply.setFooter(
@@ -143,6 +158,7 @@ const createButtonRow = (optionFlag = 0) => {
 const buttonLogic = async (interaction, random_word, choices) => {
     let current_random_word = random_word;
     let current_choices = choices;
+    let time_out = false;
 
     const filter = (i) =>
         i.customId === "A" ||
@@ -189,6 +205,8 @@ const buttonLogic = async (interaction, random_word, choices) => {
                 }
                 break;
             case "Continue":
+                console.log("???");
+                console.log(current_random_word);
                 if (current_random_word != "") {
                     current_random_word = GREvocab[Math.floor(Math.random() * GREvocab.length)];
                     //  const answer = random_word.definition;
@@ -215,9 +233,11 @@ const buttonLogic = async (interaction, random_word, choices) => {
 
     collector.on("end", async (collected) => {
         console.log(collected);
-        const new_embed = await createEmbed(random_word, choices, 3);
-        console.log(interaction);
+        const new_embed = await createEmbed(random_word, choices, 4);
+        //  const row = createButtonRow(2);
+        await interaction.editReply({ embeds: [new_embed], components: [] });
         console.log(`Collected ${collected.size} items`);
+
     });
 };
 
