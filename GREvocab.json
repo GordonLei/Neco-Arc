@@ -85,11 +85,11 @@
     },
     {
         "name": "opaque",
-        "definition": "not transparent or translucent; impenetrable to light"
+        "definition": "not able to be seen through; not easily understood "
     },
     {
         "name": "pedant",
-        "definition": "one who is unimaginative or who unduly emphasizes minutiae in the presentation or use of knowledge; one who makes a show of knowledge"
+        "definition": "one who makes a show of knowledge"
     },
     {
         "name": "placate",
@@ -101,7 +101,7 @@
     },
     {
         "name": "precipitate",
-        "definition": "to hasten the occurrence of; bring about prematurely, hastily, or suddenly"
+        "definition": "to cause (something) to happen quickly or suddenly "
     },
     {
         "name": "proprietary ",
@@ -118,5 +118,378 @@
     {
         "name": "zeal",
         "definition": "fervor for a person, cause, or object; eager desire or endeavor; enthusiastic diligence; ardor"
+    },
+    {
+        "name": "prodigal",
+        "definition": "wastefully extravagent"
+    },
+    {
+        "name": "audacious",
+        "definition": "willingness to take bold risks, showing a lack of respect"
+    },
+    {
+        "name": "cacophony",
+        "definition": "a harsh mixture of sounds"
+    },
+    {
+        "name": "enervate",
+        "definition": "to cause something to weaken or feel drained of energy"
+    },
+    {
+        "name": "ingenuous",
+        "definition": "innocent and unsuspecting"
+    },
+    {
+        "name": "misanthrope",
+        "definition": "a person who dislikes humankind"
+    },
+    {
+        "name": "paradox",
+        "definition": "something that conflicts with its istelf but may be true"
+    },
+    {
+        "name": "venerate",
+        "definition": "to regard with a lot of respect"
+    },
+    {
+        "name": "antipathy",
+        "definition": "a strong feeling of dislike"
+    },
+    {
+        "name": "deride",
+        "definition": "to express contempt for; to ridicule"
+    },
+    {
+        "name": "euloguy",
+        "definition": "a speech that praises someone, usually one who died"
+    },
+    {
+        "name": "lethargic",
+        "definition": "lacking energy"
+    },
+    {
+        "name": "obdurate",
+        "definition": "stubbornly refusing to change one's opinion"
+    },
+    {
+        "name": "philanhropic",
+        "definition": "seeking to promote the welfare of others"
+    },
+    {
+        "name": "waver",
+        "definition": "to go back and forth in decision"
+    },
+    {
+        "name": "bolster",
+        "definition": "to support or strengthen"
+    },
+    {
+        "name": "dissonance",
+        "definition": "lack of harmony or agreement"
+    },
+    {
+        "name": "garrulous",
+        "definition": "excessively talkative"
+    },
+    {
+        "name": "malleable",
+        "definition": "easily influenced"
+    },
+    {
+        "name": "ostentation",
+        "definition": "excessive display of wealth"
+    },
+    {
+        "name": "prevaricate",
+        "definition": "avoid telling the truth by not directly answering a question "
+    },
+    {
+        "name": "prosaic",
+        "definition": "dull, common, or unimaginative"
+    },
+    {
+        "name": "bucolic",
+        "definition": "referring to an idyllic rural life"
+    },
+    {
+        "name": "quotidian",
+        "definition": "occuring every day; daily"
+    },
+    {
+        "name": "restive",
+        "definition": "restless or uneasy; stubborn"
+    },
+    {
+        "name": "pernicuous",
+        "definition": "subtle or gradual harm"
+    },
+    {
+        "name": "diifident",
+        "definition": "lack of confidence or self-worth"
+    },
+    {
+        "name": "ambivalence",
+        "definition": "having mixed feelings"
+    },
+    {
+        "name": "agog",
+        "definition": "very excited or eager with anticipation"
+    },
+    {
+        "name": "artless",
+        "definition": "free from deceit or guile (POSITIVE MEANING)"
+    },
+    {
+        "name": "gossamer",
+        "definition": "something delicate, thin, such as a veil"
+    },
+    {
+        "name": "harangue",
+        "definition": "long, aggresive rant"
+    },
+    {
+        "name": "insipid",
+        "definition": "lacking interest or vigor"
+    },
+    {
+        "name": "insidious",
+        "definition": "working in a seemingly harmlessway but actually with grave effect"
+    },
+    {
+        "name": "maudlin",
+        "definition": "tearfully emotional"
+    },
+    {
+        "name": "nonplussed",
+        "definition": "utterly perplexed or confused"
+    },
+    {
+        "name": "urbane",
+        "definition": "courteous or refined"
+    },
+    {
+        "name": "ersatz",
+        "definition": "substitute product, usually of inferior quality"
+    },
+    {
+        "name": "anodyne",
+        "definition": "not likely to cause controversy"
+    },
+    {
+        "name": "euphony",
+        "definition": "agreeable sound"
+    },
+    {
+        "name": "extant",
+        "definition": "in existence and surviving"
+    },
+    {
+        "name": "lachrymose",
+        "definition": "mournful, tear-enducing"
+    },
+    {
+        "name": "munificent",
+        "definition": "immensely generous in an unusual way"
+    },
+    {
+        "name": "malificent",
+        "definition": "working or producing evil"
+    },
+    {
+        "name": "nadir",
+        "definition": "lowest point"
+    },
+    {
+        "name": "pellucid",
+        "definition": "easily understood, clear, or lucid"
+    },
+    {
+        "name": "philistine",
+        "definition": "person lacking in culture or hostile to art"
+    },
+    {
+        "name": "polemic",
+        "definition": "strong verbal or written attack"
+    },
+    {
+        "name": "puerile",
+        "definition": "childishly silly and trivial"
+    },
+    {
+        "name": "quixotic",
+        "definition": "idealistic, unreal in expectation"
+    },
+    {
+        "name": "raconteur",
+        "definition": "person skillfull in story telling"
+    },
+    {
+        "name": "soporific",
+        "definition": "causing or tending to cause sleep"
+    },
+    {
+        "name": "belligrant",
+        "definition": "eager to argue or fight"
+    },
+    {
+        "name": "tyro",
+        "definition": "a beginner"
+    },
+    {
+        "name": "auspicious",
+        "definition": "favorable, opportune, promising of success"
+    },
+    {
+        "name": "inculpate",
+        "definition": "charge with wrong-doing or to accuse"
+    },
+    {
+        "name": "specious",
+        "definition": "superficially plausible but actually wrong or incorrect "
+    },
+    {
+        "name": "banal",
+        "definition": "lacking originality"
+    },
+    {
+        "name": "hegemony",
+        "definition": "leadership or dominance over a country"
+    },
+    {
+        "name": "alacrity",
+        "definition": "eager willingness to do something"
+    },
+    {
+        "name": "paucity",
+        "definition": "lack of something"
+    },
+    {
+        "name": "innocuous",
+        "definition": "harmless; not likely to produce any ill effects"
+    },
+    {
+        "name": "abate",
+        "definition": "to diminish in intensity"
+    },
+    {
+        "name": "aberrant",
+        "definition": "diverging from the standard"
+    },
+    {
+        "name": "abjure",
+        "definition": "reject or renounce"
+    },
+    {
+        "name": "abscond",
+        "definition": "to leave secretly, evading detection"
+    },
+    {
+        "name": "acumen",
+        "definition": "keen judgement"
+    },
+    {
+        "name": "admonish",
+        "definition": "to scold or to advise firmly"
+    },
+    {
+        "name": "advocate",
+        "definition": "to recommend, support"
+    },
+    {
+        "name": "aesthetic",
+        "definition": "concerned with the nature of beauty and art"
+    },
+    {
+        "name": "affectation",
+        "definition": "fake or artificial behavior, often meant to impress or conceal the truth"
+    },
+    {
+        "name": "aggrandize",
+        "definition": "enlarge or increase, especially with wealth, power, reputation"
+    },
+    {
+        "name": "alleviate",
+        "definition": "to relieve a problem or ease a burden"
+    },
+    {
+        "name": "amalgamate",
+        "definition": "to combine to or mix together"
+    },
+    {
+        "name": "ambiguous",
+        "definition": "unclear; open to multiple interpretations"
+    },
+    {
+        "name": "ambivalent",
+        "definition": "having mixed or contradictory feelings about someone or something"
+    },
+    {
+        "name": "ameliorate",
+        "definition": "to improve or mitage a situation"
+    },
+    {
+        "name": "amendable",
+        "definition": "easily convinced or persuaded"
+    },
+    {
+        "name": "anachronism",
+        "definition": "something old fashioned; something appearing in a time periof where it does not belong"
+    },
+    {
+        "name": "analogous",
+        "definition": "comparable, appropriate for analogy"
+    },
+    {
+        "name": "anoint",
+        "definition": "to chose for a particular office or position"
+    },
+    {
+        "name": "antithetical",
+        "definition": "contrary to the very nature of"
+    },
+    {
+        "name": "appease",
+        "definition": "to placate"
+    },
+    {
+        "name": "arbitrary",
+        "definition": "seemingly chosen without reason or purpose"
+    },
+    {
+        "name": "arcane",
+        "definition": "understoof by a select few"
+    },
+    {
+        "name": "arduous",
+        "definition": "difficuly; requiring considerable effort"
+    },
+    {
+        "name": "articulate",
+        "definition": "exhibiting considerable communication skills; well-spoken"
+    },
+    {
+        "name": "ascetic",
+        "definition": "austere or self-denying"
+    },
+    {
+        "name": "audacious",
+        "definition": "very bold or presumptuous"
+    },
+    {
+        "name": "austere",
+        "definition": "severe, unadorned"
+    },
+    {
+        "name": "avarice",
+        "definition": "greed"
+    },
+    {
+        "name": "aver",
+        "definition": "to assert or allege"
+    },
+    {
+        "name": "belie",
+        "definition": "give a false impression "
     }
+    
 ]
