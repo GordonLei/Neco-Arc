@@ -1,5 +1,4 @@
-[
-    {
+[{
         "name": "abstain",
         "definition": "to hold back oneself voluntarily"
     },
@@ -425,7 +424,7 @@
     },
     {
         "name": "ameliorate",
-        "definition": "to improve or mitage a situation"
+        "definition": "to improve or mitigate (or to make less painful) a situation"
     },
     {
         "name": "amendable",
@@ -490,6 +489,854 @@
     {
         "name": "belie",
         "definition": "give a false impression "
+    },
+    {
+        "name": "dementia",
+        "definition": "the development of multiple cognitive deficits (such as memory impairment, aphasia, and the inability to plan and initiate complex behavior)"
+    },
+    {
+        "name": "hysteria",
+        "definition": "behavior exhibiting overwhelming or unmanageable fear or emotional excess"
+    },
+    {
+        "name": "hysteria",
+        "definition": "to set some mark of disgrace or infamy upon"
+    },
+    {
+        "name": "castigated",
+        "definition": "to criticize or reprimand severely"
+    },
+    {
+        "name": "demonized",
+        "definition": "to turn into a demon"
+    },
+    {
+        "name": "deify",
+        "definition": "to make a god of "
+    },
+    {
+        "name": "hysteria",
+        "definition": "behavior exhibiting overwhelming or unmanageable fear or emotional excess"
+    },
+    {
+        "name": "antedated",
+        "definition": "to be of older date than"
+    },
+    {
+        "name": "lascivious",
+        "definition": "inclined to lustfulness"
+    },
+    {
+        "name": "prescient",
+        "definition": "having knowledge of things or events before they happened"
+    },
+    {
+        "name": "preternatural",
+        "definition": "out of the ordinary course of nature"
+    },
+    {
+        "name": "hysteria",
+        "definition": "behavior exhibiting overwhelming or unmanageable fear or emotional excess"
+    },
+    {
+        "name": "pithy",
+        "definition": "brief, forceful, and meanginful in expression"
+    },
+    {
+        "name": "indemnify",
+        "definition": "to compensate for damage or loss sustained"
+    },
+    {
+        "name": "actuarial",
+        "definition": "relating to or being the the science of computing rates/insurance"
+    },
+    {
+        "name": "caustic",
+        "definition": "severly critical or sarcastic"
+    },
+    {
+        "name": "serendipity",
+        "definition": "an aptitude for making desirable discoveries by accident; good luck or fortune"
+    },
+    {
+        "name": "akimbo",
+        "definition": "with hand on hip and elbow bent outward"
+    },
+    {
+        "name": "obtuse",
+        "definition": "not quick or alert in perception; not sharp"
+    },
+    {
+        "name": "askance",
+        "definition": "with susipicion, mistrust, or disapproval"
+    },
+    {
+        "name": "catalyst",
+        "definition": "something that cause "
+    },
+    {
+        "name": "demarcate",
+        "definition": "to determine or mark off the boundaries or limits of; to seperate"
+    },
+    {
+        "name": "improvident",
+        "definition": "lacking foresight"
+    },
+    {
+        "name": "dissolute",
+        "definition": "indifferent to moral restraints"
+    },
+    {
+        "name": "acerbic",
+        "definition": "harsh or sever, as of temper or expression"
+    },
+    {
+        "name": "inimical",
+        "definition": "adverse in tendency or effect; harmful; hostile"
+    },
+    {
+        "name": "pallid",
+        "definition": "pale"
+    },
+    {
+        "name": "agahst",
+        "definition": "struck with overwhelming shock or amazement"
+    },
+    {
+        "name": "impecunious",
+        "definition": "having little or no money"
+    },
+    {
+        "name": "grandiloquent",
+        "definition": "speaking or expressed in a lofty style; pompous"
+    },
+    {
+        "name": "cajole",
+        "definition": "to persuade by flattery or promise"
+    },
+    {
+        "name": "mendacious",
+        "definition": "telling lies"
+    },
+    {
+        "name": "roundly",
+        "definition": "throughly to leave no doubt"
+    },
+    {
+        "name": "panned",
+        "definition": "criticize severely"
+    },
+    {
+        "name": "insouciance",
+        "definition": "free from concern"
+    },
+    {
+        "name": "catharsis",
+        "definition": "purging of emotions"
+    },
+    {
+        "name": "coda",
+        "definition": "the concluding section"
+    },
+    {
+        "name": "homily",
+        "definition": "a sermon"
+    },
+    {
+        "name": "providential",
+        "definition": "relating to divine providence"
+    },
+    {
+        "name": "simpatico",
+        "definition": "cogenial or like-minded"
+    },
+    {
+        "name": "inured",
+        "definition": "hardened by frequent exposure, especially to something bad"
+    },
+    {
+        "name": "effusive",
+        "definition": "unduly(excessively) demonstrative; lacking reserve"
+    },
+    {
+        "name": "syncopated",
+        "definition": "shortening words or putting accents on normally unaccented beats"
+    },
+    {
+        "name": "coalesced",
+        "definition": "to grow together; to unite or blend together"
+    },
+    {
+        "name": "agglomerated",
+        "definition": "collect or gather into a cluster / mass"
+    },
+    {
+        "name": "inveigle",
+        "definition": "to entice or lure by flattery"
+    },
+    {
+        "name": "marginalized",
+        "definition": "place in a position of little or no importance"
+    },
+    {
+        "name": "presage",
+        "definition": "a presentiment or foreboding"
+    },
+    {
+        "name": "archaically",
+        "definition": "marked by the characteristics of an earlier period"
+    },
+    {
+        "name": "consanguineous",
+        "definition": "having the same ancestry or descent; related by blood"
+    },
+    {
+        "name": "coltish",
+        "definition": "playful"
+    },
+    {
+        "name": "chary",
+        "definition": "cautious or careful"
+    },
+    {
+        "name": "sycophant",
+        "definition": "a sel-seeking, servile flatterer; fawning parasite"
+    },
+    {
+        "name": "fecund",
+        "definition": "producing a lot of offspring/in abundance"
+    },
+    {
+        "name": "efficacious",
+        "definition": "capable of having the desired result or effect; effective"
+    },
+    {
+        "name": "imperious",
+        "definition": "domineering or in a haughty manner; dictatorial"
+    },
+    {
+        "name": "progeny",
+        "definition": "a descendant or offspring"
+    },
+    {
+        "name": "recanted",
+        "definition": "to withdraw or disavow a statement"
+    },
+    {
+        "name": "unobstrusive",
+        "definition": "unassertive"
+    },
+    {
+        "name": "hysteria",
+        "definition": "behavior exhibiting overwhelming or unmanageable fear or emotional excess"
+    },
+    {
+        "name": "stouter",
+        "definition": "bulky"
+    },
+    {
+        "name": "concomitant",
+        "definition": "existing or occuring with something else"
+    },
+    {
+        "name": "obsequious",
+        "definition": "characterized by or showing servile obedience and eagerness to please"
+    },
+    {
+        "name": "vestigal",
+        "definition": "a trace of something"
+    },
+    {
+        "name": "antiquated",
+        "definition": "aged / old; obsolete"
+    },
+    {
+        "name": "high-handed",
+        "definition": "condescending or presumptuous"
+    },
+    {
+        "name": "evanescent",
+        "definition": "vanishing; fading away"
+    },
+    {
+        "name": "hysteria",
+        "definition": "behavior exhibiting overwhelming or unmanageable fear or emotional excess"
+    },
+    {
+        "name": "peccadillo",
+        "definition": "a very minor or slight sin or offense"
+    },
+    {
+        "name": "hysteria",
+        "definition": "behavior exhibiting overwhelming or unmanageable fear or emotional excess"
+    },
+    {
+        "name": "adverse",
+        "definition": "unfavorable or antagonistic in purpose"
+    },
+    {
+        "name": "sagacious",
+        "definition": "having or showing acute mental discernment and keen pratical sense"
+    },
+    {
+        "name": "deposed",
+        "definition": "removed from high office or position"
+    },
+    {
+        "name": "facile",
+        "definition": "moving, acting, working, proceeding with ease"
+    },
+    {
+        "name": "amicable",
+        "definition": "characterized by or showing goodwill; friendly"
+    },
+    {
+        "name": "dulcet",
+        "definition": "pleasant to the ear"
+    },
+
+    {
+        "name": "solicitous",
+        "definition": "anxious or concerned"
+    },
+    {
+        "name": "motley",
+        "definition": "exhibiting great diversity of elements"
+    },
+    {
+        "name": "disingenuous",
+        "definition": "lacking in frankness, candor, or sincerity"
+    },
+    {
+        "name": "ameliorating",
+        "definition": "to make or become better, more bearable, etc."
+    },
+    {
+        "name": "excoriating",
+        "definition": "to denounce or berate severely"
+    },
+    {
+        "name": "calumny",
+        "definition": "a false and malicious statement designed to injure the reputation of someone"
+    },
+    {
+        "name": "garlands",
+        "definition": "a wreath"
+    },
+    {
+        "name": "obloquies",
+        "definition": "censure, blame, or absuive language aimed at a person or thing"
+    },
+    {
+        "name": "parsimony",
+        "definition": "extreme or excessive economy or frugality"
+    },
+    {
+        "name": "pulchritude",
+        "definition": "physical beauty"
+    },
+    {
+        "name": "tepid",
+        "definition": "lukewarm; characterized by a lack of force or enthusiasm"
+    },
+    {
+        "name": "indolent",
+        "definition": "having or showing a disposition to avoid exertion; slothful"
+    },
+    {
+        "name": "probity",
+        "definition": "integtiry and uprightness; honesty"
+    },
+    {
+        "name": "dissipation",
+        "definition": "to scatter"
+    },
+    {
+        "name": "profligate",
+        "definition": "utterly and shamelessly immoral; recklessly prodigal"
+    },
+    {
+        "name": "antediluvian",
+        "definition": "very old-fashioned; out of date"
+    },
+    {
+        "name": "ascetic",
+        "definition": "pursuit of contemplative ideals and pratices; (a monk>)"
+    },
+    {
+        "name": "canny",
+        "definition": "careful; cautious; prudent"
+    },
+    {
+        "name": "desultory",
+        "definition": "lacking in consistency; disconnected"
+    },
+    {
+        "name": "brusque",
+        "definition": "abrupt in manner"
+    },
+    {
+        "name": "pacific",
+        "definition": "peaceful"
+    },
+    {
+        "name": "prudent",
+        "definition": "wise or judicious in practical affairs"
+    },
+    {
+        "name": "parlous",
+        "definition": "perilous; dangerous"
+    },
+    {
+        "name": "semiotic",
+        "definition": "relating to signs"
+    },
+    {
+        "name": "mercurial",
+        "definition": "volatile; lively and quick-witted"
+    },
+    {
+        "name": "vainglory",
+        "definition": "excessive elation or pride over one's achievements"
+    },
+    {
+        "name": "entreaty",
+        "definition": "earnest request or petition"
+    },
+    {
+        "name": "brook",
+        "definition": "to stand for"
+    },
+    {
+        "name": "modicum",
+        "definition": "a small portion"
+    },
+    {
+        "name": "consecration",
+        "definition": "dedication to the service and worship of a deity"
+    },
+    {
+        "name": "perpetuity",
+        "definition": "continuing or enduring forever"
+    },
+    {
+        "name": "duplicity",
+        "definition": "decietfulness in speech or conduct"
+    },
+    {
+        "name": "amity",
+        "definition": "friendship; peaceful harmony"
+    },
+    {
+        "name": "solace",
+        "definition": "comfort in sorrow, misfortune, or trouble"
+    },
+    {
+        "name": "mores",
+        "definition": "the fixed morally binding customs of a particular group; moral attitudes"
+    },
+    {
+        "name": "truism",
+        "definition": "an undoubted or self-evident truth"
+    },
+    {
+        "name": "plaudits",
+        "definition": "an act or round of applause"
+    },
+    {
+        "name": "distension",
+        "definition": "to extend, enlarge, expand, etc."
+    },
+    {
+        "name": "expatiation",
+        "definition": "to move about freely or at will"
+    },
+    {
+        "name": "repertory",
+        "definition": "a place where something may be found"
+    },
+    {
+        "name": "bucolic",
+        "definition": "relating to a rural life"
+    },
+    {
+        "name": "liberal",
+        "definition": "not strict"
+    },
+    {
+        "name": "tendentious",
+        "definition": "marked by a tendency in favor of a particulat point of view; biased"
+    },
+    {
+        "name": "protean",
+        "definition": "displaying great diversity"
+    },
+    {
+        "name": "parochial",
+        "definition": "of or relating to a church parish"
+    },
+    {
+        "name": "arcadian",
+        "definition": "a person who lives a simple quiet life"
+    },
+    {
+        "name": "squalid",
+        "definition": "marked by fithiness and degradation from neglect or poverty"
+    },
+    {
+        "name": "hinterland",
+        "definition": "a region lying inland from a coast"
+    },
+    {
+        "name": "debauchery",
+        "definition": "extreme indulgence in bodily pleasures and espeically sexual pleasres"
+    },
+    {
+        "name": "licentious",
+        "definition": "lacking legal or moral restraints"
+    },
+    {
+        "name": "perspicacious",
+        "definition": "an acute mental vision or descernment"
+    },
+    {
+        "name": "prudish",
+        "definition": "excessively proepr or modest in speech / conduct"
+    },
+    {
+        "name": "effete",
+        "definition": "no longer fertile; lost vitality"
+    },
+    {
+        "name": "abstruse",
+        "definition": "difficult to comprehend"
+    },
+    {
+        "name": "myopic",
+        "definition": "disapproving; shortsighted"
+    },
+    {
+        "name": "beholden",
+        "definition": "obligated; indebted"
+    },
+    {
+        "name": "apathetic",
+        "definition": "having or showing little or no emotion"
+    },
+    {
+        "name": "iconoclast",
+        "definition": "a person who attacks settled beliefs or instituions"
+    },
+    {
+        "name": "redress",
+        "definition": "to set right; to compensate"
+    },
+    {
+        "name": "exacerbated",
+        "definition": "to make a problem worse"
+    },
+    {
+        "name": "ratified",
+        "definition": "to approve and sanction formally"
+    },
+    {
+        "name": "decamped",
+        "definition": "suddenly leave"
+    },
+    {
+        "name": "vitreous",
+        "definition": "resembling glass"
+    },
+    {
+        "name": "grizzled",
+        "definition": "having gray hair"
+    },
+    {
+        "name": "rancorous",
+        "definition": "deeply malevolent"
+    },
+    {
+        "name": "inchoate",
+        "definition": "being only partly in exitence or operation"
+    },
+    {
+        "name": "serendipitous",
+        "definition": "luck that takes the form of finding valuable or pleasant things that are not looked for"
+    },
+    {
+        "name": "dispensation",
+        "definition": "general state or ordering of things"
+    },
+    {
+        "name": "piques",
+        "definition": "to cause curiousity or interest"
+    },
+    {
+        "name": "interlocutor",
+        "definition": "person who takes part in conversation"
+    },
+    {
+        "name": "genteel",
+        "definition": "having an aristocratic quality or flavor"
+    },
+    {
+        "name": "eclectic",
+        "definition": "including things taken from many different sources"
+    },
+    {
+        "name": "populist",
+        "definition": "a member claiming to represent the common people"
+    },
+    {
+        "name": "explicate",
+        "definition": "to give a detailed explanation of"
+    },
+    {
+        "name": "robust",
+        "definition": "strong and healthy, strongly formed or built"
+    },
+    {
+        "name": "gainsay",
+        "definition": "declare to be untrue or invalid"
+    },
+    {
+        "name": "ebullient",
+        "definition": "boiling; agitated"
+    },
+    {
+        "name": "hysteria",
+        "definition": "behavior exhibiting overwhelming or unmanageable fear or emotional excess"
+    },
+    {
+        "name": "solvent",
+        "definition": "able to pay all legal debts"
+    },
+    {
+        "name": "contrived",
+        "definition": "having an unnatural or false appearance or quality"
+    },
+    {
+        "name": "draconian",
+        "definition": "excessively harsh and severe"
+    },
+    {
+        "name": "factous",
+        "definition": "silly and pointless"
+    },
+    {
+        "name": "illicit",
+        "definition": "forbidden by law, rules, or custom"
+    },
+    {
+        "name": "nonplussed",
+        "definition": "unsure about what to say, think, or do"
+    },
+    {
+        "name": "dogmatic",
+        "definition": "expressing personal opinions or beliefs as if they are cetainly correct and cannot be doubted"
+    },
+    {
+        "name": "immaterial",
+        "definition": "unimportant"
+    },
+    {
+        "name": "anathema",
+        "definition": "someone or something intensely disliked"
+    },
+    {
+        "name": "antipathy",
+        "definition": "strong dislike"
+    },
+    {
+        "name": "flagrancy",
+        "definition": "conspicuously offensive"
+    },
+    {
+        "name": "patent",
+        "definition": "obcious or clear"
+    },
+    {
+        "name": "spurious",
+        "definition": "false"
+    },
+    {
+        "name": "parables",
+        "definition": "short fictious story"
+    },
+    {
+        "name": "veracity",
+        "definition": "truth or accuracy"
+    },
+    {
+        "name": "candor",
+        "definition": "honest"
+    },
+    {
+        "name": "antiethical",
+        "definition": "being in direct and unequivocal opposition"
+    },
+    {
+        "name": "abated",
+        "definition": "decrease in force or intensity"
+    },
+    {
+        "name": "assent",
+        "definition": "approval"
+    },
+    {
+        "name": "titillation",
+        "definition": "to excite pleasurably"
+    },
+    {
+        "name": "simulacrum",
+        "definition": "insubstantial form or semblance of something"
+    },
+    {
+        "name": "abettor",
+        "definition": "actively second and encourage; to assist or support"
+    },
+    {
+        "name": "mollifies",
+        "definition": "to soothe in temper or disposition"
+    },
+    {
+        "name": "dilettante",
+        "definition": "a person having a superficial interest in an art or a branch of knowledge; a dabbler"
+    },
+    {
+        "name": "ideologue",
+        "definition": "an often blindly partisan advocate or adherent of a particular ideology"
+    },
+    {
+        "name": "hysteria",
+        "definition": "behavior exhibiting overwhelming or unmanageable fear or emotional excess"
+    },
+    {
+        "name": "hackneyed",
+        "definition": "lacking in fresh or originality"
+    },
+    {
+        "name": "arresting",
+        "definition": "catching the attention"
+    },
+    {
+        "name": "vacuity",
+        "definition": "an empty lot"
+    },
+    {
+        "name": "eminence",
+        "definition": "a condition of being well-known"
+    },
+    {
+        "name": "modish",
+        "definition": "fashionable"
+    },
+    {
+        "name": "conversance",
+        "definition": "the quality or state of having knowledge"
+    },
+    {
+        "name": "denigrate",
+        "definition": "to defame"
+    },
+    {
+        "name": "besmirch",
+        "definition": "to cause harm or damage to purity"
+    },
+    {
+        "name": "balkanized",
+        "definition": "to break up a group into smaller and often hostile units"
+    },
+    {
+        "name": "maladroit",
+        "definition": "inept"
+    },
+    {
+        "name": "patrician",
+        "definition": "person of high birth"
+    },
+    {
+        "name": "defeasible",
+        "definition": "capable of being annuled or made void"
+    },
+    {
+        "name": "ironclad",
+        "definition": "firm or secure"
+    },
+    {
+        "name": "sophistry",
+        "definition": "subtly deceptive reasoning or argumentation"
+    },
+    {
+        "name": "hysteria",
+        "definition": "behavior exhibiting overwhelming or unmanageable fear or emotional excess"
+    },
+    {
+        "name": "sinecure",
+        "definition": "an office or position that requires little work"
+    },
+    {
+        "name": "volubility",
+        "definition": "earily rolling or turning"
+    },
+    {
+        "name": "hysteria",
+        "definition": "behavior exhibiting overwhelming or unmanageable fear or emotional excess"
+    },
+    {
+        "name": "disquieting",
+        "definition": "to take away the peace or tranquility"
+    },
+    {
+        "name": "asperity",
+        "definition": "roughness of manner or of temper"
+    },
+    {
+        "name": "dissolute",
+        "definition": "lacking restraint"
+    },
+    {
+        "name": "salubrious",
+        "definition": "favorable to or promoting health or well-being"
+    },
+    {
+        "name": "ubiquitous",
+        "definition": "seeming to be seen everywhere"
+    },
+    {
+        "name": "comestible",
+        "definition": "edible"
+    },
+    {
+        "name": "fiduciary",
+        "definition": "relating to or involving trust"
+    },
+    {
+        "name": "hardline",
+        "definition": "advocating or involvign a rigidly uncompromising coruse of action"
+    },
+    {
+        "name": "loath",
+        "definition": "reluctant / unwilling to do something contrary to one's ways of thinking "
+    },
+    {
+        "name": "infirmity",
+        "definition": "feeble' sick "
+    },
+    {
+        "name": "complacence",
+        "definition": "self-satisfaction"
+    },
+    {
+        "name": "equanimity",
+        "definition": "evenness of mind espeically under stress"
+    },
+    {
+        "name": "permissiveness",
+        "definition": "tolerance"
     }
-    
+
+
+
+
 ]
