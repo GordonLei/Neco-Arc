@@ -9,13 +9,17 @@ let maxResults = 0;
 const DELETE_QUERY = -1;
 const SAVE_QUERY = -2;
 
+//  this just allows fetch to work. will be replaced with axios
 const fetch = (...args) =>
   import("node-fetch").then(({ default: fetch }) => fetch(...args));
 
+//  function to create embed.
+//    queryNumber is which result number (ex. the first result) you are at
+//    optionFlag is what type of option you are doing (are you saving, deleting, etc.)
 const createEmbed = async (data, queryNumber = 0, optionFlag = 0) => {
   const embedReply = new MessageEmbed();
   try {
-    //  check if data exists
+    //  check if data exists. if nothing then create embedd where it does not exsit
     console.log("check if the data exists", data);
     if (maxResults === 0) {
       embedReply
@@ -26,6 +30,7 @@ const createEmbed = async (data, queryNumber = 0, optionFlag = 0) => {
           "https://raw.githubusercontent.com/GordonLei/Neco-Arc/main/images/profile.png"
         );
     } else if (optionFlag === DELETE_QUERY) {
+      //create a red left-border embed that says you deleted the query
       embedReply
         .setDescription("Deleted query result")
         .setColor("#E3242B")
@@ -39,17 +44,17 @@ const createEmbed = async (data, queryNumber = 0, optionFlag = 0) => {
     else {
       //  receive the first result for now
       const firstResult = data.data.Page.media[queryNumber];
-
       //  console.log("description", firstResult.description);
       //  console.log(data.data.Page.media[0].title);
 
       //  create the embed and return it with the necessary fields
-
+      //  depending on what the option flag is, change the left-border color
       if (optionFlag === SAVE_QUERY) {
         embedReply.setColor("#00A86B");
       } else {
         embedReply.setColor("#0099ff");
       }
+      //  create the embed by parsing through the relevant information
       embedReply
         .setTitle(firstResult.title.romaji || "null")
         .setURL(firstResult.siteUrl || "null")
@@ -68,8 +73,9 @@ const createEmbed = async (data, queryNumber = 0, optionFlag = 0) => {
           },
           {
             name: "Season",
-            value: `${firstResult.season || "null"} ${firstResult.seasonYear || "null"
-              }`,
+            value: `${firstResult.season || "null"} ${
+              firstResult.seasonYear || "null"
+            }`,
             inline: true,
           },
           {
@@ -106,6 +112,7 @@ const createEmbed = async (data, queryNumber = 0, optionFlag = 0) => {
         );
     }
   } catch (error) {
+    //  if there is an error, just reply an embed saying that there are no results
     console.log(error);
     embedReply
       .setDescription("No results")
@@ -115,69 +122,69 @@ const createEmbed = async (data, queryNumber = 0, optionFlag = 0) => {
         "https://raw.githubusercontent.com/GordonLei/Neco-Arc/main/images/profile.png"
       );
   }
+  //return the embed
   return embedReply;
 };
 
 //  search all works by using AniList v2 API
 const searchAll = async (nameOfWork) => {
   const query = `
-query ($id: Int, $page: Int, $perPage: Int, $search: String) {
-  Page (page: $page, perPage: $perPage) {
-    pageInfo {
-      total
-      currentPage
-      lastPage
-      hasNextPage
-      perPage
-    }
-    media (id: $id, search: $search) {
-      id
-    title {
-      romaji
-      english
-      native
-    }
-    startDate {
-      year
-      month
-      day
-    }
-    endDate {
-      year
-      month
-      day
-    }
-    coverImage {
-      large
-      medium
-    }
-    bannerImage
-    format
-    type
-    status
-    episodes
-    chapters
-    volumes
-    season
-    description
-    averageScore
-    meanScore
-    genres
-    synonyms
-    siteUrl
-    seasonYear
-    duration
-    }
-  }
-}
-`;
-
+    query ($id: Int, $page: Int, $perPage: Int, $search: String) {
+      Page (page: $page, perPage: $perPage) {
+        pageInfo {
+          total
+          currentPage
+          lastPage
+          hasNextPage
+          perPage
+        }
+        media (id: $id, search: $search) {
+          id
+        title {
+          romaji
+          english
+          native
+        }
+        startDate {
+          year
+          month
+          day
+        }
+        endDate {
+          year
+          month
+          day
+        }
+        coverImage {
+          large
+          medium
+        }
+        bannerImage
+        format
+        type
+        status
+        episodes
+        chapters
+        volumes
+        season
+        description
+        averageScore
+        meanScore
+        genres
+        synonyms
+        siteUrl
+        seasonYear
+        duration
+        }
+      }
+    }`;
+  //  just some variables to add to query through GraphQL
   const variables = {
     search: nameOfWork,
     page: 1,
     perPage: 10,
   };
-
+  //  generate query URL on AniList API
   const url = "https://graphql.anilist.co",
     options = {
       method: "POST",
@@ -190,24 +197,25 @@ query ($id: Int, $page: Int, $perPage: Int, $search: String) {
         variables: variables,
       }),
     };
-
+  //  return the results of the query URL
   return fetch(url, options)
     .then(handleResponse)
     .then(handleData)
     .catch(handleError);
-
+  //  if it works, then return the JSON then parse through the data
   function handleResponse(response) {
     return response.json().then(function (json) {
       return response.ok ? json : Promise.reject(json);
     });
   }
-
+  //  parse through the data by going to the data key and returning it
   function handleData(data) {
     console.log(data);
+    //  maxResults should only be at most 10 because of our variables we defined for GraphQL query
     maxResults = data.data.Page.media.length;
     return data;
   }
-
+  //  if there is an error, output it
   function handleError(error) {
     console.log("Error, check console");
     console.error(error);
@@ -215,30 +223,35 @@ query ($id: Int, $page: Int, $perPage: Int, $search: String) {
   }
 };
 
+//  control what happens depending on what button you pressed
 const buttonLogic = async (interaction, data) => {
   const filter = (i) =>
     i.customId === "save" ||
     i.customId === "delete" ||
     i.customId === "left" ||
     i.customId === "right"; /*  && i.user.id === clientId */
-
+  //  collector for what button you pressed.
+  //    ENDS when 15 seconds have passed
   const collector = interaction.channel.createMessageComponentCollector({
     filter,
     time: 15000,
   });
-
+  //  when the collector is collecting button presses...
   collector.on("collect", async (i) => {
+    //  if the button id was "save"...
     if (i.customId === "save") {
-      queryResultNumber = 0;
+      //  update the embed but do the option for SAVE_QUERY / saving the query
       const embed = await createEmbed(data, queryResultNumber, SAVE_QUERY);
       await i.update({ embeds: [embed], components: [] });
       collector.stop();
     } else if (i.customId === "delete") {
+      //  update the embed but do the option for DELETE_QUERY / deleting the query
       queryResultNumber = 0;
       const embed = await createEmbed(data, queryResultNumber, DELETE_QUERY);
       await i.update({ embeds: [embed], components: [] });
       collector.stop();
     } else if (i.customId === "left") {
+      //  update the embed by back to the previous option
       queryResultNumber -= 1;
       console.log(queryResultNumber);
       const embed = await createEmbed(data, queryResultNumber);
@@ -247,6 +260,7 @@ const buttonLogic = async (interaction, data) => {
       console.log("time: ", collector.time);
       await i.update({ embeds: [embed], components: [row] });
     } else if (i.customId === "right") {
+      //  update the embed by back to the next option
       queryResultNumber += 1;
       console.log(queryResultNumber);
       const embed = await createEmbed(data, queryResultNumber);
@@ -255,19 +269,24 @@ const buttonLogic = async (interaction, data) => {
       console.log("time: ", collector.time);
       await i.update({ embeds: [embed], components: [row] });
     } else {
+      //  if you do something invalid, then update with nothing for now
       await i.update({ components: [] });
     }
   });
-
+  //  when the collector ends, do nothing for now
   collector.on("end", async (collected) => {
     queryResultNumber = 0;
-    console.log(collected);
     console.log(`Collected ${collected.size} items`);
+    const new_embed = await createEmbed(data, queryResultNumber, SAVE_QUERY);
+    //  const row = createButtonRow(2);
+    await interaction.editReply({ embeds: [new_embed], components: [] });
   });
 };
 
+//  this creates the row of buttons
 const createButtonRow = (queryNumber) => {
   const buttonRow = new MessageActionRow();
+  //  if the queryNumber > 0, then add the left button
   if (queryNumber) {
     buttonRow.addComponents(
       new MessageButton()
@@ -276,6 +295,7 @@ const createButtonRow = (queryNumber) => {
         .setStyle("SECONDARY")
     );
   }
+  //  if you are still one before the maxResults, then still add the right button
   if (queryNumber + 1 < maxResults) {
     buttonRow.addComponents(
       new MessageButton()
@@ -284,6 +304,7 @@ const createButtonRow = (queryNumber) => {
         .setStyle("SECONDARY")
     );
   }
+  //  if you have at least one result, add the save and delete button
   if (maxResults > 1) {
     buttonRow.addComponents(
       new MessageButton()
@@ -298,7 +319,7 @@ const createButtonRow = (queryNumber) => {
         .setEmoji("440700481627750401")
     );
   }
-
+  //  return the button row
   return buttonRow;
 };
 
@@ -318,7 +339,7 @@ module.exports = {
   async execute(interaction) {
     try {
       //  await interaction.deferReply();
-      //  search for the anime
+      //  search for a result
       const data = await searchAll(interaction.options.getString("name"));
       //  after receiving the data, create the embed
       const embed = await createEmbed(data, queryResultNumber);

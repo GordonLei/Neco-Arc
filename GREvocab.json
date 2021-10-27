@@ -224,7 +224,7 @@
     },
     {
         "name": "diifident",
-        "definition": "lack of confidence or self-worth"
+        "definition": "lack of self-confidence or self-worth"
     },
     {
         "name": "ambivalence",
@@ -700,7 +700,7 @@
     },
     {
         "name": "sycophant",
-        "definition": "a sel-seeking, servile flatterer; fawning parasite"
+        "definition": "a self-seeking, servile flatterer; fawning parasite"
     },
     {
         "name": "fecund",
@@ -1001,7 +1001,7 @@
     },
     {
         "name": "prudish",
-        "definition": "excessively proepr or modest in speech / conduct"
+        "definition": "excessively proper or modest in speech / conduct"
     },
     {
         "name": "effete",
@@ -1321,7 +1321,7 @@
     },
     {
         "name": "infirmity",
-        "definition": "feeble' sick "
+        "definition": "feeble; sick "
     },
     {
         "name": "complacence",
@@ -2270,7 +2270,7 @@
     {
         "name": "obviate",
         "definition": "to anticipate and prevent or eliminate"
-    },
+    }
 
 
 
