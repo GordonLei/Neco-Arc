@@ -9,6 +9,7 @@ let queryResultNumber = 0;
 let maxResults = 0;
 const DELETE_QUERY = -1;
 const SAVE_QUERY = -2;
+const ddragonURL = "http://ddragon.leagueoflegends.com/cdn/11.21.1/data/en_US/";
 
 const createEmbed = async (data, queryNumber = 0, optionFlag = 0) => {
   const embedReply = new MessageEmbed();
@@ -42,7 +43,8 @@ const createEmbed = async (data, queryNumber = 0, optionFlag = 0) => {
       } else {
         embedReply.setColor("#0099ff");
       }
-      console.log(data.title);
+      //  console.log(data.title);
+
       embedReply
         .setTitle(data.name || "null")
         .setDescription(data.title || "null")
@@ -53,14 +55,44 @@ const createEmbed = async (data, queryNumber = 0, optionFlag = 0) => {
         )
         .addFields(
           {
-            name: "Blurb",
-            value: `${data.blurb || "null"}`,
-            inline: false,
+            name: "Lore",
+            value: `${data.lore || "null"}`,
           },
           {
             name: "Tags",
             value: `${data.tags || "null"}`,
-            inline: false,
+          },
+          {
+            name: "Stats",
+            value: `
+              **Health**: ${data.stats.hp}  + (${data.stats.hpperlevel})
+              **Health Regen**: ${data.stats.hpregen}  + (${data.stats.hpregenperlevel})
+              **Armor**: ${data.stats.armor} + (${data.stats.armorperlevel})
+              **Attack Damage**: ${data.stats.attackdamage} + (${data.stats.attackdamageperlevel})
+              **Move Speed**: ${data.stats.movespeed} 
+              `,
+            inline: true,
+          },
+          {
+            name: "\u200b",
+            value: `
+              **Mana**: ${data.stats.mp} + (${data.stats.mpperlevel})
+              **Mana Regen**: ${data.stats.mpregen} + (${data.stats.mpregenperlevel})
+              **Magic Resist**: ${data.stats.spellblock} + (${data.stats.spellblockperlevel})
+              **Attack Speed**: ${data.stats.attackspeed} + (${data.stats.attackspeedperlevel})
+              **Attack Range**: ${data.stats.attackrange}
+              `,
+            inline: true,
+          },
+          {
+            name: "Skills",
+            value: `
+              **< P >**: ${data.passive.name || "null"}
+              **< Q >**: ${data.spells[0].name || "null"}
+              **< W >**: ${data.spells[1].name || "null"}
+              **< E >**: ${data.spells[2].name || "null"}
+              **< R >**: ${data.spells[3].name || "null"}
+            `,
           }
         )
         .setTimestamp()
@@ -96,7 +128,7 @@ const getClosestChampName = (nameArray, queryName) => {
   //  but first, make the query all lower-case then capitalize the first letter
   const fixedQueryName =
     queryName.toLowerCase()[0].toUpperCase() + queryName.slice(1).toLowerCase();
-  if (nameArray.includes(new_name)) {
+  if (nameArray.includes(fixedQueryName)) {
     return fixedQueryName;
   }
   //else try to find the champion name that closest fits
@@ -107,8 +139,8 @@ const getClosestChampName = (nameArray, queryName) => {
 
 module.exports = {
   data: new SlashCommandBuilder()
-    .setName("lol_search_champion")
-    .setDescription("Queries through Riot API to show ")
+    .setName("lol_search_champion_info")
+    .setDescription("Queries through Riot API to show brief champion info")
     .addStringOption((option) =>
       option
         .setName("name")
@@ -116,19 +148,20 @@ module.exports = {
         .setRequired(true)
     ),
   async execute(interaction) {
-    let championData = await axios
-      .get(
-        "http://ddragon.leagueoflegends.com/cdn/11.21.1/data/en_US/champion.json"
-      )
+    let championName = await axios
+      .get(ddragonURL + "champion.json")
       .then((response) => {
         const nameArray = getChampionNamesArray(response);
         const closestName = getClosestChampName(
           nameArray,
           interaction.options.getString("name")
         );
-        console.log(closestName);
-        return response.data.data[closestName];
+        return closestName;
       })
+      .catch();
+    let championData = await axios
+      .get(ddragonURL + "champion/" + championName + ".json")
+      .then((response) => response.data.data[championName])
       .catch();
     const embed = await createEmbed(championData);
     //  console.log(championData);
