@@ -6,12 +6,20 @@ const { MessageEmbed, MessageActionRow, MessageButton } = require("discord.js");
 //  counter for what result number you are currently at
 let queryResultNumber = 0;
 let maxResults = 0;
+let timeout = true;
 const DELETE_QUERY = -1;
 const SAVE_QUERY = -2;
 
 //  this just allows fetch to work. will be replaced with axios
 const fetch = (...args) =>
   import("node-fetch").then(({ default: fetch }) => fetch(...args));
+
+//  reset the global variables
+const reset = () => {
+  queryResultNumber = 0;
+  maxResults = 0;
+  timeout = true;
+};
 
 //  function to create embed.
 //    queryNumber is which result number (ex. the first result) you are at
@@ -243,12 +251,15 @@ const buttonLogic = async (interaction, data) => {
       //  update the embed but do the option for SAVE_QUERY / saving the query
       const embed = await createEmbed(data, queryResultNumber, SAVE_QUERY);
       await i.update({ embeds: [embed], components: [] });
+      timeout = false;
       collector.stop();
     } else if (i.customId === "delete") {
       //  update the embed but do the option for DELETE_QUERY / deleting the query
       queryResultNumber = 0;
       const embed = await createEmbed(data, queryResultNumber, DELETE_QUERY);
       await i.update({ embeds: [embed], components: [] });
+      timeout = false;
+      console.log("TIMEOUT FALSE");
       collector.stop();
     } else if (i.customId === "left") {
       //  update the embed by back to the previous option
@@ -275,11 +286,13 @@ const buttonLogic = async (interaction, data) => {
   });
   //  when the collector ends, do nothing for now
   collector.on("end", async (collected) => {
-    queryResultNumber = 0;
     console.log(`Collected ${collected.size} items`);
-    const new_embed = await createEmbed(data, queryResultNumber, SAVE_QUERY);
-    //  const row = createButtonRow(2);
-    await interaction.editReply({ embeds: [new_embed], components: [] });
+    if (timeout) {
+      const new_embed = await createEmbed(data, queryResultNumber, SAVE_QUERY);
+      //  const row = createButtonRow(2);
+      await interaction.editReply({ embeds: [new_embed], components: [] });
+    }
+    reset();
   });
 };
 
@@ -327,7 +340,7 @@ const createButtonRow = (queryNumber) => {
 module.exports = {
   //  just parts to describe the command
   data: new SlashCommandBuilder()
-    .setName("search")
+    .setName("al_search")
     .setDescription("Query though AniList API")
     .addStringOption((option) =>
       option

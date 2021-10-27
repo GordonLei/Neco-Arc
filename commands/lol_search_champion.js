@@ -107,7 +107,7 @@ const getClosestChampName = (nameArray, queryName) => {
 
 module.exports = {
   data: new SlashCommandBuilder()
-    .setName("search_lol_champion")
+    .setName("lol_search_champion")
     .setDescription("Queries through Riot API to show ")
     .addStringOption((option) =>
       option
