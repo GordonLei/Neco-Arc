@@ -7,15 +7,23 @@ const axios = require("axios");
 //  temporary information
 let queryResultNumber = 0;
 let maxResults = 0;
+let timeout = true;
 const DELETE_QUERY = -1;
 const SAVE_QUERY = -2;
-const ddragonURL = "http://ddragon.leagueoflegends.com/cdn/11.21.1/data/en_US/";
+const ddragonURL = "http://ddragon.leagueoflegends.com/cdn/11.21.1/";
 
-const createEmbed = async (data, queryNumber = 0, optionFlag = 0) => {
+const reset = () => {
+  queryResultNumber = 0;
+  maxResults = 0;
+  timeout = true;
+};
+
+const createEmbed = async (data, optionFlag = 0) => {
   const embedReply = new MessageEmbed();
   try {
     //  check if data exists
     //  console.log("check if the data exists", data);
+    console.log(optionFlag);
     if (!data) {
       embedReply
         .setDescription("No results")
@@ -33,25 +41,13 @@ const createEmbed = async (data, queryNumber = 0, optionFlag = 0) => {
           `via Data Dragon`,
           "https://raw.githubusercontent.com/GordonLei/Neco-Arc/main/images/profile.png"
         );
-    }
-    //  if data exists, create appropriate embed
-    else {
-      //  create the embed and return it with the necessary fields
-
-      if (optionFlag === SAVE_QUERY) {
-        embedReply.setColor("#00A86B");
-      } else {
-        embedReply.setColor("#0099ff");
-      }
-      //  console.log(data.title);
-
+    } else if (optionFlag === 0) {
+      //  this will show the beginning skill descriptions
       embedReply
         .setTitle(data.name || "null")
         .setDescription(data.title || "null")
         .setThumbnail(
-          "http://ddragon.leagueoflegends.com/cdn/11.21.1/img/champion/" +
-            data.name +
-            ".png" || "null"
+          ddragonURL + "img/champion/" + data.name + ".png" || "null"
         )
         .addFields({
           name: "Skills",
@@ -77,6 +73,69 @@ const createEmbed = async (data, queryNumber = 0, optionFlag = 0) => {
           `via Data Dragon`,
           "https://raw.githubusercontent.com/GordonLei/Neco-Arc/main/images/profile.png"
         );
+    } else if (optionFlag === "P") {
+      //  this will show the passive
+      if (optionFlag === SAVE_QUERY) {
+        embedReply.setColor("#00A86B");
+      } else {
+        embedReply.setColor("#0099ff");
+      }
+      console.log(ddragonURL + "img/passive/" + data.passive.image.full);
+      embedReply
+        .setTitle(data.name || "null")
+        .setDescription(data.title || "null")
+        .setThumbnail(
+          ddragonURL + "img/passive/" + data.passive.image.full || "null"
+        )
+        .addFields({
+          name: data.passive.name,
+          value: data.passive.description,
+        })
+        .setTimestamp()
+        .setFooter(
+          `via Data Dragon`,
+          "https://raw.githubusercontent.com/GordonLei/Neco-Arc/main/images/profile.png"
+        );
+    } else {
+      //  only other options are the skills
+      if (optionFlag === SAVE_QUERY) {
+        embedReply.setColor("#00A86B");
+      } else {
+        embedReply.setColor("#0099ff");
+      }
+      //  console.log(data.title);
+
+      let tempSpell;
+      switch (optionFlag) {
+        case "Q":
+          tempSpell = data.spells[0];
+          break;
+        case "W":
+          tempSpell = data.spells[1];
+          break;
+        case "E":
+          tempSpell = data.spells[2];
+          break;
+        case "R":
+          tempSpell = data.spells[3];
+          break;
+      }
+
+      embedReply
+        .setTitle(data.name || "null")
+        .setDescription(data.title || "null")
+        .setThumbnail(
+          ddragonURL + "img/spell/" + tempSpell.image.full || "null"
+        )
+        .addFields({
+          name: `** ${tempSpell.name} **`,
+          value: `${tempSpell.tooltip} `,
+        })
+        .setTimestamp()
+        .setFooter(
+          `via Data Dragon`,
+          "https://raw.githubusercontent.com/GordonLei/Neco-Arc/main/images/profile.png"
+        );
     }
   } catch (error) {
     console.log(error);
@@ -89,6 +148,65 @@ const createEmbed = async (data, queryNumber = 0, optionFlag = 0) => {
       );
   }
   return embedReply;
+};
+
+const createButtonRow = (optionFlag = 0) => {
+  const buttonRow = new MessageActionRow();
+  buttonRow.addComponents(
+    new MessageButton()
+      .setCustomId("P")
+      .setLabel("Passive")
+      .setStyle("SECONDARY"),
+    new MessageButton().setCustomId("Q").setLabel("Q").setStyle("SECONDARY"),
+    new MessageButton().setCustomId("W").setLabel("W").setStyle("SECONDARY"),
+    new MessageButton().setCustomId("E").setLabel("E").setStyle("SECONDARY"),
+    new MessageButton().setCustomId("R").setLabel("R").setStyle("SECONDARY")
+  );
+  return buttonRow;
+};
+
+//  control what happens depending on what button you pressed
+const buttonLogic = async (interaction, data) => {
+  let time_out = false;
+
+  const filter = (i) =>
+    i.customId === "Q" ||
+    i.customId === "W" ||
+    i.customId === "E" ||
+    i.customId === "R" ||
+    i.customId === "P";
+
+  const collector = interaction.channel.createMessageComponentCollector({
+    filter,
+    time: 15000,
+  });
+
+  collector.on("collect", async (i) => {
+    let selectedChoice = "";
+    switch (i.customId) {
+      case "Q":
+      case "W":
+      case "E":
+      case "R":
+      case "P":
+        //    if your selected option != correct definition, just update with a new embed saying you are wrong
+        //    this shows the option you picked and the right answer
+        const embed = await createEmbed(data, i.customId);
+        const row = createButtonRow();
+        collector.resetTimer();
+        console.log("time: ", collector.time);
+        //  await i.update({ embeds: [embed] });
+        await i.update({ embeds: [embed], components: [row] });
+        break;
+    }
+  });
+
+  //  if you time out, update the embed with no button row while saying you timed out
+  collector.on("end", async (collected) => {
+    const new_embed = await createEmbed(data);
+    await interaction.editReply({ embeds: [new_embed], components: [] });
+    console.log(`Collected ${collected.size} items`);
+  });
 };
 
 const getChampionNamesArray = (response) => {
@@ -125,26 +243,31 @@ module.exports = {
         .setRequired(true)
     ),
   async execute(interaction) {
-    let championName = await axios
-      .get(ddragonURL + "champion.json")
-      .then((response) => {
-        const nameArray = getChampionNamesArray(response);
-        const closestName = getClosestChampName(
-          nameArray,
-          interaction.options.getString("name")
-        );
-        return closestName;
-      })
-      .catch();
-    let championData = await axios
-      .get(ddragonURL + "champion/" + championName + ".json")
-      .then((response) => response.data.data[championName])
-      .catch();
-    const embed = await createEmbed(championData);
-    //  console.log(championData);
-    let message = { embeds: [embed] } || {
-      content: "Pong!",
-    };
-    await interaction.reply(message);
+    try {
+      let championName = await axios
+        .get(ddragonURL + "data/en_US/champion.json")
+        .then((response) => {
+          const nameArray = getChampionNamesArray(response);
+          const closestName = getClosestChampName(
+            nameArray,
+            interaction.options.getString("name")
+          );
+          return closestName;
+        })
+        .catch();
+      let championData = await axios
+        .get(ddragonURL + "data/en_US/champion/" + championName + ".json")
+        .then((response) => response.data.data[championName])
+        .catch();
+      const embed = await createEmbed(championData);
+      const buttonRow = createButtonRow();
+      let message = { embeds: [embed], components: [buttonRow] } || {
+        content: "Pong!",
+      };
+      await interaction.reply(message);
+      await buttonLogic(interaction, championData);
+    } catch (error) {
+      console.log(error);
+    }
   },
 };

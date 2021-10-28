@@ -9,7 +9,7 @@ let queryResultNumber = 0;
 let maxResults = 0;
 const DELETE_QUERY = -1;
 const SAVE_QUERY = -2;
-const ddragonURL = "http://ddragon.leagueoflegends.com/cdn/11.21.1/data/en_US/";
+const ddragonURL = "http://ddragon.leagueoflegends.com/cdn/11.21.1/";
 
 const createEmbed = async (data, queryNumber = 0, optionFlag = 0) => {
   const embedReply = new MessageEmbed();
@@ -49,9 +49,7 @@ const createEmbed = async (data, queryNumber = 0, optionFlag = 0) => {
         .setTitle(data.name || "null")
         .setDescription(data.title || "null")
         .setThumbnail(
-          "http://ddragon.leagueoflegends.com/cdn/11.21.1/img/champion/" +
-            data.name +
-            ".png" || "null"
+          ddragonURL + "img/champion/" + data.name + ".png" || "null"
         )
         .addFields(
           {
@@ -123,6 +121,46 @@ const getChampionNamesArray = (response) => {
   return nameArray;
 };
 
+const levenshteinDistance = (s1, s2) => {
+  s1 = s1.toLowerCase();
+  s2 = s2.toLowerCase();
+
+  let costs = new Array();
+  for (let i = 0; i <= s1.length; i++) {
+    let lastValue = i;
+    for (let j = 0; j <= s2.length; j++) {
+      if (i == 0) costs[j] = j;
+      else {
+        if (j > 0) {
+          let newValue = costs[j - 1];
+          if (s1.charAt(i - 1) != s2.charAt(j - 1))
+            newValue = Math.min(Math.min(newValue, lastValue), costs[j]) + 1;
+          costs[j - 1] = lastValue;
+          lastValue = newValue;
+        }
+      }
+    }
+    if (i > 0) costs[s2.length] = lastValue;
+  }
+  return costs[s2.length];
+};
+
+const similarity = (championName, queryName) => {
+  let long = championName;
+  let short = queryName;
+  if (championName.length < queryName.length) {
+    long = queryName;
+    short = championName;
+  }
+  let long_length = long.length;
+  if (long_length === 0) {
+    return 1.0;
+  }
+  return (
+    (long_length - levenshteinDistance(long, short)) / parseFloat(long_length)
+  );
+};
+
 const getClosestChampName = (nameArray, queryName) => {
   //simple check if you typed the correct champion name
   //  but first, make the query all lower-case then capitalize the first letter
@@ -133,6 +171,9 @@ const getClosestChampName = (nameArray, queryName) => {
   }
   //else try to find the champion name that closest fits
   else {
+    const namePercentage = nameArray.map(
+      (champName) => (champName, similarity(champName, queryName))
+    );
     console.log("void");
   }
 };
@@ -148,26 +189,28 @@ module.exports = {
         .setRequired(true)
     ),
   async execute(interaction) {
-    let championName = await axios
-      .get(ddragonURL + "champion.json")
-      .then((response) => {
-        const nameArray = getChampionNamesArray(response);
-        const closestName = getClosestChampName(
-          nameArray,
-          interaction.options.getString("name")
-        );
-        return closestName;
-      })
-      .catch();
-    let championData = await axios
-      .get(ddragonURL + "champion/" + championName + ".json")
-      .then((response) => response.data.data[championName])
-      .catch();
-    const embed = await createEmbed(championData);
-    //  console.log(championData);
-    let message = { embeds: [embed] } || {
-      content: "Pong!",
-    };
-    await interaction.reply(message);
+    try {
+      let championName = await axios
+        .get(ddragonURL + "data/en_US/champion.json")
+        .then((response) => {
+          const nameArray = getChampionNamesArray(response);
+          const closestName = getClosestChampName(
+            nameArray,
+            interaction.options.getString("name")
+          );
+          return closestName;
+        })
+        .catch(() => {});
+      let championData = await axios
+        .get(ddragonURL + "data/en_US/champion/" + championName + ".json")
+        .then((response) => response.data.data[championName])
+        .catch(() => {});
+      const embed = await createEmbed(championData);
+      //  console.log(championData);
+      let message = { embeds: [embed] } || {
+        content: "Pong!",
+      };
+      await interaction.reply(message);
+    } catch (error) {}
   },
 };
