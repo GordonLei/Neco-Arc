@@ -13,7 +13,7 @@ const createEmbed = async (infoData, masteryData) => {
     //  check if data exists
     if (!infoData || !masteryData) {
       embedReply
-        .setDescription("No results; summoner name is probably wrong")
+        .setDescription("No results; summoner name or region is probably wrong")
         .setTimestamp()
         .setFooter(
           `via Data Dragon`,
