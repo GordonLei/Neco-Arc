@@ -171,17 +171,28 @@ const getClosestChampName = (nameArray, queryName) => {
   }
   //else try to find the champion name that closest fits
   else {
-    const namePercentage = nameArray.map(
-      (champName) => (champName, similarity(champName, queryName))
-    );
-    console.log("void");
+    const namePercentage = nameArray.map((champName) => [
+      champName,
+      similarity(champName, queryName),
+    ]);
+
+    namePercentage
+      .sort((name1, name2) => {
+        console.log(name1, name2);
+        return name1[1] < name2[1];
+      })
+      .reverse();
+    console.log(namePercentage);
+    return namePercentage[0][1];
   }
 };
 
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("lol_search_champion_info")
-    .setDescription("Queries through Riot API to show brief champion info")
+    .setDescription(
+      "Queries through Riot's Data Dragon to show brief champion info"
+    )
     .addStringOption((option) =>
       option
         .setName("name")

@@ -131,6 +131,10 @@ const createEmbed = async (data, optionFlag = 0) => {
           name: `** ${tempSpell.name} **`,
           value: `${tempSpell.tooltip} `,
         })
+        .setImage(
+          //"https://d28xe8vt774jo5.cloudfront.net/champion-abilities/{champ}/ability_{champ}_{skill}1.webm"
+          "https://media1.giphy.com/media/JOiVbcrColZo1oaXDT/giphy.gif?cid=790b7611b8128278e636447c41aa2f0003df04f4ba6e9e21&rid=giphy.gif&ct=g"
+        )
         .setTimestamp()
         .setFooter(
           `via Data Dragon`,
@@ -235,7 +239,9 @@ const getClosestChampName = (nameArray, queryName) => {
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("lol_search_champion_skill")
-    .setDescription("Queries through Riot API to show champion skill + passive")
+    .setDescription(
+      "Queries through Riot's Data Dragon to show champion skill + passive"
+    )
     .addStringOption((option) =>
       option
         .setName("name")
