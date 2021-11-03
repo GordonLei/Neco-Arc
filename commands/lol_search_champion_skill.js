@@ -41,7 +41,7 @@ const createEmbed = async (data, optionFlag = 0) => {
           `via Data Dragon`,
           "https://raw.githubusercontent.com/GordonLei/Neco-Arc/main/images/profile.png"
         );
-    } else if (optionFlag === 0) {
+    } else if (optionFlag === 0 || optionFlag === "O") {
       //  this will show the beginning skill descriptions
       embedReply
         .setTitle(data.name || "null")
@@ -155,6 +155,13 @@ const createEmbed = async (data, optionFlag = 0) => {
 };
 
 const createButtonRow = (optionFlag = 0) => {
+  const overviewButtonRow = new MessageActionRow();
+  overviewButtonRow.addComponents(
+    new MessageButton()
+      .setCustomId("O")
+      .setLabel("Overview")
+      .setStyle("SECONDARY")
+  );
   const buttonRow = new MessageActionRow();
   buttonRow.addComponents(
     new MessageButton()
@@ -166,7 +173,7 @@ const createButtonRow = (optionFlag = 0) => {
     new MessageButton().setCustomId("E").setLabel("E").setStyle("SECONDARY"),
     new MessageButton().setCustomId("R").setLabel("R").setStyle("SECONDARY")
   );
-  return buttonRow;
+  return [overviewButtonRow, buttonRow];
 };
 
 //  control what happens depending on what button you pressed
@@ -178,7 +185,8 @@ const buttonLogic = async (interaction, data) => {
     i.customId === "W" ||
     i.customId === "E" ||
     i.customId === "R" ||
-    i.customId === "P";
+    i.customId === "P" ||
+    i.customId === "O";
 
   const collector = interaction.channel.createMessageComponentCollector({
     filter,
@@ -193,14 +201,18 @@ const buttonLogic = async (interaction, data) => {
       case "E":
       case "R":
       case "P":
+      case "O":
         //    if your selected option != correct definition, just update with a new embed saying you are wrong
         //    this shows the option you picked and the right answer
         const embed = await createEmbed(data, i.customId);
-        const row = createButtonRow();
+        const [buttonRowOne, buttonRowTwo] = createButtonRow();
         collector.resetTimer();
         console.log("time: ", collector.time);
         //  await i.update({ embeds: [embed] });
-        await i.update({ embeds: [embed], components: [row] });
+        await i.update({
+          embeds: [embed],
+          components: [buttonRowOne, buttonRowTwo],
+        });
         break;
     }
   });
@@ -319,8 +331,11 @@ module.exports = {
         .then((response) => response.data.data[championName])
         .catch();
       const embed = await createEmbed(championData);
-      const buttonRow = createButtonRow();
-      let message = { embeds: [embed], components: [buttonRow] } || {
+      const [buttonRowOne, buttonRowTwo] = createButtonRow();
+      let message = {
+        embeds: [embed],
+        components: [buttonRowOne, buttonRowTwo],
+      } || {
         content: "Pong!",
       };
       await interaction.reply(message);
