@@ -121,6 +121,8 @@ const getChampionNamesArray = (response) => {
   return nameArray;
 };
 
+//  the levenshteinDistance and the similarity was taken from StackOverflow
+//    will probably be changed later for own code
 const levenshteinDistance = (s1, s2) => {
   s1 = s1.toLowerCase();
   s2 = s2.toLowerCase();
@@ -171,19 +173,18 @@ const getClosestChampName = (nameArray, queryName) => {
   }
   //else try to find the champion name that closest fits
   else {
-    const namePercentage = nameArray.map((champName) => [
+    let namePercentage = nameArray.map((champName) => [
       champName,
       similarity(champName, queryName),
     ]);
 
     namePercentage
       .sort((name1, name2) => {
-        console.log(name1, name2);
-        return name1[1] < name2[1];
-      })
-      .reverse();
-    console.log(namePercentage);
-    return namePercentage[0][1];
+        return name1[1] - name2[1];
+      });
+    namePercentage.reverse();
+    //console.log(namePercentage);
+    return namePercentage[0][0];
   }
 };
 
