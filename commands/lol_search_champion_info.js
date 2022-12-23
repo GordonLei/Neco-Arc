@@ -1,17 +1,17 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
-const { MessageEmbed, MessageActionRow, MessageButton } = require("discord.js");
+const { MessageEmbed } = require("discord.js");
 require("dotenv").config();
-const riotDevKey = process.env.riotDevKey;
+//  const riotDevKey = process.env.riotDevKey;
 const axios = require("axios");
 
 //  temporary information
-let queryResultNumber = 0;
-let maxResults = 0;
+//  let queryResultNumber = 0;
+//  let maxResults = 0;
 const DELETE_QUERY = -1;
 const SAVE_QUERY = -2;
 const ddragonURL = "http://ddragon.leagueoflegends.com/cdn/11.21.1/";
 
-const createEmbed = async (data, queryNumber = 0, optionFlag = 0) => {
+const createEmbed = async (data, optionFlag = 0) => {
   const embedReply = new MessageEmbed();
   try {
     //  check if data exists
@@ -85,11 +85,11 @@ const createEmbed = async (data, queryNumber = 0, optionFlag = 0) => {
           {
             name: "Skills",
             value: `
-              **< P >**: ${data.passive.name || "null"}
-              **< Q >**: ${data.spells[0].name || "null"}
-              **< W >**: ${data.spells[1].name || "null"}
-              **< E >**: ${data.spells[2].name || "null"}
-              **< R >**: ${data.spells[3].name || "null"}
+              **< P >** ${data.passive.name || "null"}
+              **< Q >** ${data.spells[0].name || "null"}
+              **< W >** ${data.spells[1].name || "null"}
+              **< E >** ${data.spells[2].name || "null"}
+              **< R >** ${data.spells[3].name || "null"}
             `,
           }
         )
@@ -115,7 +115,7 @@ const createEmbed = async (data, queryNumber = 0, optionFlag = 0) => {
 const getChampionNamesArray = (response) => {
   const data = response.data.data;
   const nameArray = [];
-  for (let key of Object.keys(data)) {
+  for (const key of Object.keys(data)) {
     nameArray.push(data[key].name);
   }
   return nameArray;
@@ -127,19 +127,19 @@ const levenshteinDistance = (s1, s2) => {
   s1 = s1.toLowerCase();
   s2 = s2.toLowerCase();
 
-  let costs = new Array();
+  const costs = new Array();
   for (let i = 0; i <= s1.length; i++) {
     let lastValue = i;
     for (let j = 0; j <= s2.length; j++) {
-      if (i == 0) costs[j] = j;
-      else {
-        if (j > 0) {
-          let newValue = costs[j - 1];
-          if (s1.charAt(i - 1) != s2.charAt(j - 1))
-            newValue = Math.min(Math.min(newValue, lastValue), costs[j]) + 1;
-          costs[j - 1] = lastValue;
-          lastValue = newValue;
+      if (i == 0) {
+        costs[j] = j;
+      } else if (j > 0) {
+        let newValue = costs[j - 1];
+        if (s1.charAt(i - 1) != s2.charAt(j - 1)) {
+          newValue = Math.min(Math.min(newValue, lastValue), costs[j]) + 1;
         }
+        costs[j - 1] = lastValue;
+        lastValue = newValue;
       }
     }
     if (i > 0) costs[s2.length] = lastValue;
@@ -154,7 +154,7 @@ const similarity = (championName, queryName) => {
     long = queryName;
     short = championName;
   }
-  let long_length = long.length;
+  const long_length = long.length;
   if (long_length === 0) {
     return 1.0;
   }
@@ -164,26 +164,25 @@ const similarity = (championName, queryName) => {
 };
 
 const getClosestChampName = (nameArray, queryName) => {
-  //simple check if you typed the correct champion name
+  //  simple check if you typed the correct champion name
   //  but first, make the query all lower-case then capitalize the first letter
   const fixedQueryName =
     queryName.toLowerCase()[0].toUpperCase() + queryName.slice(1).toLowerCase();
   if (nameArray.includes(fixedQueryName)) {
     return fixedQueryName;
   }
-  //else try to find the champion name that closest fits
+  //  else try to find the champion name that closest fits
   else {
-    let namePercentage = nameArray.map((champName) => [
+    const namePercentage = nameArray.map((champName) => [
       champName,
       similarity(champName, queryName),
     ]);
 
-    namePercentage
-      .sort((name1, name2) => {
-        return name1[1] - name2[1];
-      });
+    namePercentage.sort((name1, name2) => {
+      return name1[1] - name2[1];
+    });
     namePercentage.reverse();
-    //console.log(namePercentage);
+    //  console.log(namePercentage);
     return namePercentage[0][0];
   }
 };
@@ -202,7 +201,7 @@ module.exports = {
     ),
   async execute(interaction) {
     try {
-      let championName = await axios
+      const championName = await axios
         .get(ddragonURL + "data/en_US/champion.json")
         .then((response) => {
           const nameArray = getChampionNamesArray(response);
@@ -212,17 +211,23 @@ module.exports = {
           );
           return closestName;
         })
-        .catch(() => {});
-      let championData = await axios
+        .catch((error) => {
+          console.log(error);
+        });
+      const championData = await axios
         .get(ddragonURL + "data/en_US/champion/" + championName + ".json")
         .then((response) => response.data.data[championName])
-        .catch(() => {});
+        .catch((error) => {
+          console.log(error);
+        });
       const embed = await createEmbed(championData);
       //  console.log(championData);
-      let message = { embeds: [embed] } || {
+      const message = { embeds: [embed] } || {
         content: "Pong!",
       };
       await interaction.reply(message);
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
   },
 };

@@ -12,7 +12,7 @@ const SAVE_QUERY = -2;
 
 //  this just allows fetch to work. will be replaced with axios
 const fetch = (...args) =>
-  import("node-fetch").then(({ default: fetch }) => fetch(...args));
+  import("node-fetch").then(({ default: fetch }) => fetch(...args)); //eslint-disable-line
 
 //  reset the global variables
 const reset = () => {
@@ -38,7 +38,7 @@ const createEmbed = async (data, queryNumber = 0, optionFlag = 0) => {
           "https://raw.githubusercontent.com/GordonLei/Neco-Arc/main/images/profile.png"
         );
     } else if (optionFlag === DELETE_QUERY) {
-      //create a red left-border embed that says you deleted the query
+      //  create a red left-border embed that says you deleted the query
       embedReply
         .setDescription("Deleted query result")
         .setColor("#E3242B")
@@ -130,7 +130,7 @@ const createEmbed = async (data, queryNumber = 0, optionFlag = 0) => {
         "https://raw.githubusercontent.com/GordonLei/Neco-Arc/main/images/profile.png"
       );
   }
-  //return the embed
+  //  return the embed
   return embedReply;
 };
 
@@ -212,7 +212,7 @@ const searchAll = async (nameOfWork) => {
     .catch(handleError);
   //  if it works, then return the JSON then parse through the data
   function handleResponse(response) {
-    return response.json().then(function (json) {
+    return response.json().then((json) => {
       return response.ok ? json : Promise.reject(json);
     });
   }
@@ -237,7 +237,7 @@ const buttonLogic = async (interaction, data) => {
     i.customId === "save" ||
     i.customId === "delete" ||
     i.customId === "left" ||
-    i.customId === "right"; /*  && i.user.id === clientId */
+    i.customId === "right";
   //  collector for what button you pressed.
   //    ENDS when 15 seconds have passed
   const collector = interaction.channel.createMessageComponentCollector({

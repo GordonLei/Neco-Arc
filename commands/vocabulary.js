@@ -1,12 +1,7 @@
 /*  jshint esversion: 8 */
 
 const { SlashCommandBuilder } = require("@discordjs/builders");
-const {
-  MessageEmbed,
-  MessageActionRow,
-  MessageButton,
-  Message,
-} = require("discord.js");
+const { MessageEmbed, MessageActionRow, MessageButton } = require("discord.js");
 const fs = require("fs");
 //  open the GREvocab.json and get all of the words
 const rawdata = fs.readFileSync("GREvocab.json");
@@ -42,7 +37,7 @@ const createEmbed = async (random_word, choices, optionFlag = 0) => {
   const embedReply = new MessageEmbed();
   embedReply.setDescription(random_word.name).setTimestamp();
   switch (optionFlag) {
-    //0 is when you are playing the game
+    //  0 is when you are playing the game
     case 0:
       embedReply.addFields(
         {
@@ -64,13 +59,13 @@ const createEmbed = async (random_word, choices, optionFlag = 0) => {
       );
 
       break;
-    //1 is when you are correct
+    //  1 is when you are correct
     case 1:
       embedReply
         .setColor("#00A86B")
         .addField("Answer:", `${choices[0]}`, false);
       break;
-    //1 is when you are wrong
+    //  2 is when you are wrong
     case 2:
       embedReply.setColor("#E3242B").addFields(
         {
@@ -83,11 +78,11 @@ const createEmbed = async (random_word, choices, optionFlag = 0) => {
         }
       );
       break;
-    //3 is when you are done playing
+    //   is when you are done playing
     case 3:
       embedReply.setColor("#00A86B").setDescription("game is done");
       break;
-    //4 is when you timed out
+    //  4 is when you timed out
     case 4:
       embedReply.setColor("#E3242B").addFields(
         {
@@ -107,7 +102,7 @@ const createEmbed = async (random_word, choices, optionFlag = 0) => {
     `via custom JSON`,
     "https://raw.githubusercontent.com/GordonLei/Neco-Arc/main/images/profile.png"
   );
-  //return the embed
+  //  return the embed
   return embedReply;
 };
 
@@ -158,7 +153,7 @@ const createButtonRow = (optionFlag = 0) => {
 const buttonLogic = async (interaction, random_word, choices) => {
   let current_random_word = random_word;
   let current_choices = choices;
-  let time_out = false;
+  //  let time_out = false;
 
   const filter = (i) =>
     i.customId === "A" ||

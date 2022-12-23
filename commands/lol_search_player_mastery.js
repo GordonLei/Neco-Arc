@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
-const { MessageEmbed, MessageActionRow, MessageButton } = require("discord.js");
+const { MessageEmbed } = require("discord.js");
 require("dotenv").config();
 const riotDevKey = process.env.riotDevKey;
 const axios = require("axios");
@@ -39,7 +39,7 @@ const createEmbed = async (infoData, masteryData) => {
       //  get an array that is the champNameArray but finding the correct name for the id
       const masterySums = getMasterySums(masteryData);
 
-      //  create the embed 
+      //  create the embed
       embedReply
         .setTitle(name + "'s Masteries" || "")
         .setDescription("Top Five Masteries are:")
@@ -118,7 +118,7 @@ const createEmbed = async (infoData, masteryData) => {
   return embedReply;
 };
 
-//  get the summonerInfo 
+//  get the summonerInfo
 const getSummonerInfo = async (axiosBase, name) => {
   return await axiosBase
     .get("/summoner/v4/summoners/by-name/" + name + "?api_key=" + riotDevKey)
@@ -126,13 +126,13 @@ const getSummonerInfo = async (axiosBase, name) => {
       return response.data;
     })
     .catch((error) => {
-      console.log(error);
+      console.log("IN summonerInfo\n", error);
     });
 };
 
 //  get the champion masteries given an ecnrypted Summoner ID
 const getSummonerMasteries = async (axiosBase, id) => {
-  //console.log(id);
+  //  console.log(id);
   return await axiosBase
     .get(
       "/champion-mastery/v4/champion-masteries/by-summoner/" +
@@ -141,11 +141,11 @@ const getSummonerMasteries = async (axiosBase, id) => {
         riotDevKey
     )
     .then((response) => {
-      //console.log(response.data);
+      //  console.log(response.data);
       return response.data;
     })
     .catch((error) => {
-      console.log(error);
+      console.log("IN summonerMasteries\n", error);
     });
 };
 
@@ -154,15 +154,17 @@ const getSummonerMasteries = async (axiosBase, id) => {
 const getSummonerIcon = async (id) => {
   return await axios
     .get(ddragonURL + "img/profileicon/" + id + ".png")
-    .then((response) => {
+    .then(() => {
       return ddragonURL + "img/profileicon/" + id + ".png";
     })
-    .catch(() => {});
+    .catch((error) => {
+      console.log(error);
+    });
 };
 
-//  given an array of ids, translate it to an array of names 
+//  given an array of ids, translate it to an array of names
 const getChampionName = async (idArray) => {
-  let nameArray = [];
+  const nameArray = [];
   //  get the champion JSON
   const championData = await axios
     .get(ddragonURL + "data/en_US/champion.json")
@@ -173,7 +175,7 @@ const getChampionName = async (idArray) => {
       console.log(error);
     });
   //  create a dictionary where the key is the ID and the value is the name of the champion
-  let championDict = {};
+  const championDict = {};
   for (const [key, value] of Object.entries(championData)) {
     championDict[value["key"]] = key;
   }
@@ -183,16 +185,16 @@ const getChampionName = async (idArray) => {
       nameArray.push(championDict[id]);
     }
   });
-  //return the nameArray
+  //  return the nameArray
   return nameArray;
 };
 
-//  this will just get the sums of the number of champions, 
+//  this will just get the sums of the number of champions,
 //    their total levels in mastery, as well as the total number of mastery points
 const getMasterySums = (masteryData) => {
-  totalChamps = 0;
-  totalLevels = 0;
-  totalPoints = 0;
+  let totalChamps = 0;
+  let totalLevels = 0;
+  let totalPoints = 0;
   masteryData.forEach((championMastery) => {
     totalChamps++;
     totalLevels += championMastery.championLevel;
@@ -239,7 +241,7 @@ module.exports = {
           ".api.riotgames.com/lol",
       });
       //  get the summonerInfor
-      let summonerInfo = await getSummonerInfo(
+      const summonerInfo = await getSummonerInfo(
         axiosBase,
         interaction.options.getString("name")
       );
@@ -255,7 +257,7 @@ module.exports = {
       //  now create a releveant embed
       const embed = await createEmbed(summonerInfo, summonerMasteries);
       //  console.log(championData);
-      let message = { embeds: [embed] } || {
+      const message = { embeds: [embed] } || {
         content: "Pong!",
       };
       await interaction.reply(message);

@@ -1,22 +1,24 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
 const { MessageEmbed, MessageActionRow, MessageButton } = require("discord.js");
 require("dotenv").config();
-const riotDevKey = process.env.riotDevKey;
+//  const riotDevKey = process.env.riotDevKey;
 const axios = require("axios");
 
 //  temporary information
-let queryResultNumber = 0;
-let maxResults = 0;
-let timeout = true;
+//  let queryResultNumber = 0;
+//  let maxResults = 0;
+//  let timeout = true;
 const DELETE_QUERY = -1;
 const SAVE_QUERY = -2;
 const ddragonURL = "http://ddragon.leagueoflegends.com/cdn/11.21.1/";
 
+/*
 const reset = () => {
   queryResultNumber = 0;
   maxResults = 0;
   timeout = true;
 };
+*/
 
 const createEmbed = async (data, optionFlag = 0) => {
   const embedReply = new MessageEmbed();
@@ -132,7 +134,7 @@ const createEmbed = async (data, optionFlag = 0) => {
           value: `${tempSpell.tooltip} `,
         })
         .setImage(
-          //"https://d28xe8vt774jo5.cloudfront.net/champion-abilities/{champ}/ability_{champ}_{skill}1.webm"
+          //  "https://d28xe8vt774jo5.cloudfront.net/champion-abilities/{champ}/ability_{champ}_{skill}1.webm"
           "https://media1.giphy.com/media/JOiVbcrColZo1oaXDT/giphy.gif?cid=790b7611b8128278e636447c41aa2f0003df04f4ba6e9e21&rid=giphy.gif&ct=g"
         )
         .setTimestamp()
@@ -154,7 +156,7 @@ const createEmbed = async (data, optionFlag = 0) => {
   return embedReply;
 };
 
-const createButtonRow = (optionFlag = 0) => {
+const createButtonRow = () => {
   const overviewButtonRow = new MessageActionRow();
   overviewButtonRow.addComponents(
     new MessageButton()
@@ -178,7 +180,7 @@ const createButtonRow = (optionFlag = 0) => {
 
 //  control what happens depending on what button you pressed
 const buttonLogic = async (interaction, data) => {
-  let time_out = false;
+  //  let time_out = false;
 
   const filter = (i) =>
     i.customId === "Q" ||
@@ -194,7 +196,9 @@ const buttonLogic = async (interaction, data) => {
   });
 
   collector.on("collect", async (i) => {
-    let selectedChoice = "";
+    //  let selectedChoice = "";
+    const embed = await createEmbed(data, i.customId);
+    const [buttonRowOne, buttonRowTwo] = createButtonRow();
     switch (i.customId) {
       case "Q":
       case "W":
@@ -204,8 +208,6 @@ const buttonLogic = async (interaction, data) => {
       case "O":
         //    if your selected option != correct definition, just update with a new embed saying you are wrong
         //    this shows the option you picked and the right answer
-        const embed = await createEmbed(data, i.customId);
-        const [buttonRowOne, buttonRowTwo] = createButtonRow();
         collector.resetTimer();
         console.log("time: ", collector.time);
         //  await i.update({ embeds: [embed] });
@@ -228,7 +230,7 @@ const buttonLogic = async (interaction, data) => {
 const getChampionNamesArray = (response) => {
   const data = response.data.data;
   const nameArray = [];
-  for (let key of Object.keys(data)) {
+  for (const key of Object.keys(data)) {
     nameArray.push(data[key].name);
   }
   return nameArray;
@@ -240,19 +242,19 @@ const levenshteinDistance = (s1, s2) => {
   s1 = s1.toLowerCase();
   s2 = s2.toLowerCase();
 
-  let costs = new Array();
+  const costs = new Array();
   for (let i = 0; i <= s1.length; i++) {
     let lastValue = i;
     for (let j = 0; j <= s2.length; j++) {
-      if (i == 0) costs[j] = j;
-      else {
-        if (j > 0) {
-          let newValue = costs[j - 1];
-          if (s1.charAt(i - 1) != s2.charAt(j - 1))
-            newValue = Math.min(Math.min(newValue, lastValue), costs[j]) + 1;
-          costs[j - 1] = lastValue;
-          lastValue = newValue;
+      if (i == 0) {
+        costs[j] = j;
+      } else if (j > 0) {
+        let newValue = costs[j - 1];
+        if (s1.charAt(i - 1) != s2.charAt(j - 1)) {
+          newValue = Math.min(Math.min(newValue, lastValue), costs[j]) + 1;
         }
+        costs[j - 1] = lastValue;
+        lastValue = newValue;
       }
     }
     if (i > 0) costs[s2.length] = lastValue;
@@ -267,7 +269,7 @@ const similarity = (championName, queryName) => {
     long = queryName;
     short = championName;
   }
-  let long_length = long.length;
+  const long_length = long.length;
   if (long_length === 0) {
     return 1.0;
   }
@@ -277,26 +279,25 @@ const similarity = (championName, queryName) => {
 };
 
 const getClosestChampName = (nameArray, queryName) => {
-  //simple check if you typed the correct champion name
+  //  simple check if you typed the correct champion name
   //  but first, make the query all lower-case then capitalize the first letter
   const fixedQueryName =
     queryName.toLowerCase()[0].toUpperCase() + queryName.slice(1).toLowerCase();
   if (nameArray.includes(fixedQueryName)) {
     return fixedQueryName;
   }
-  //else try to find the champion name that closest fits
+  //  else try to find the champion name that closest fits
   else {
-    let namePercentage = nameArray.map((champName) => [
+    const namePercentage = nameArray.map((champName) => [
       champName,
       similarity(champName, queryName),
     ]);
 
-    namePercentage
-      .sort((name1, name2) => {
-        return name1[1] - name2[1];
-      });
+    namePercentage.sort((name1, name2) => {
+      return name1[1] - name2[1];
+    });
     namePercentage.reverse();
-    //console.log(namePercentage);
+    //  console.log(namePercentage);
     return namePercentage[0][0];
   }
 };
@@ -315,7 +316,7 @@ module.exports = {
     ),
   async execute(interaction) {
     try {
-      let championName = await axios
+      const championName = await axios
         .get(ddragonURL + "data/en_US/champion.json")
         .then((response) => {
           const nameArray = getChampionNamesArray(response);
@@ -326,13 +327,13 @@ module.exports = {
           return closestName;
         })
         .catch();
-      let championData = await axios
+      const championData = await axios
         .get(ddragonURL + "data/en_US/champion/" + championName + ".json")
         .then((response) => response.data.data[championName])
         .catch();
       const embed = await createEmbed(championData);
       const [buttonRowOne, buttonRowTwo] = createButtonRow();
-      let message = {
+      const message = {
         embeds: [embed],
         components: [buttonRowOne, buttonRowTwo],
       } || {
