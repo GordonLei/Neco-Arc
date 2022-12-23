@@ -1,22 +1,24 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
 const { MessageEmbed, MessageActionRow, MessageButton } = require("discord.js");
 require("dotenv").config();
-const riotDevKey = process.env.riotDevKey;
+//  const riotDevKey = process.env.riotDevKey;
 const axios = require("axios");
-
+const leaguePatch = process.env.leaguePatch;
 //  temporary information
-let queryResultNumber = 0;
-let maxResults = 0;
-let timeout = true;
+//  let queryResultNumber = 0;
+//  let maxResults = 0;
+//  let timeout = true;
 const DELETE_QUERY = -1;
 const SAVE_QUERY = -2;
-const ddragonURL = "http://ddragon.leagueoflegends.com/cdn/11.21.1/";
+const ddragonURL = `http://ddragon.leagueoflegends.com/cdn/${leaguePatch}/`;
 
+/*
 const reset = () => {
   queryResultNumber = 0;
   maxResults = 0;
   timeout = true;
 };
+*/
 
 const createEmbed = async (data, optionFlag = 0) => {
   const embedReply = new MessageEmbed();
@@ -41,7 +43,7 @@ const createEmbed = async (data, optionFlag = 0) => {
           `via Data Dragon`,
           "https://raw.githubusercontent.com/GordonLei/Neco-Arc/main/images/profile.png"
         );
-    } else if (optionFlag === 0) {
+    } else if (optionFlag === 0 || optionFlag === "O") {
       //  this will show the beginning skill descriptions
       embedReply
         .setTitle(data.name || "null")
@@ -49,25 +51,28 @@ const createEmbed = async (data, optionFlag = 0) => {
         .setThumbnail(
           ddragonURL + "img/champion/" + data.name + ".png" || "null"
         )
-        .addFields({
-          name: "Skills",
-          value: `
-              **< P >**: ${data.passive.name || "null"}
-              ${data.passive.description || "null"}
-              
-              **< Q >**: ${data.spells[0].name || "null"}
-              ${data.spells[0].description || "null"}
-              
-              **< W >**: ${data.spells[1].name || "null"}
-              ${data.spells[1].description || "null"}
-              
-              **< E >**: ${data.spells[2].name || "null"}
-              ${data.spells[2].description || "null"}
-              
-              **< R >**: ${data.spells[3].name || "null"}
-              ${data.spells[3].description || "null"}
-            `,
-        })
+        .addFields(
+          {
+            name: `**< P >** ${data.passive.name || "null"}`,
+            value: `${data.passive.description || "null"}`,
+          },
+          {
+            name: `**< Q >** ${data.spells[0].name || "null"}`,
+            value: `${data.spells[0].description || "null"}`,
+          },
+          {
+            name: `**< W >** ${data.spells[1].name || "null"}`,
+            value: `${data.spells[1].description || "null"}`,
+          },
+          {
+            name: `**< E >** ${data.spells[2].name || "null"}`,
+            value: `${data.spells[2].description || "null"}`,
+          },
+          {
+            name: `**< R >** ${data.spells[3].name || "null"}`,
+            value: `${data.spells[3].description || "null"}`,
+          }
+        )
         .setTimestamp()
         .setFooter(
           `via Data Dragon`,
@@ -120,7 +125,7 @@ const createEmbed = async (data, optionFlag = 0) => {
           tempSpell = data.spells[3];
           break;
       }
-
+      console.log(tempSpell.name, tempSpell.tooltip.length);
       embedReply
         .setTitle(data.name || "null")
         .setDescription(data.title || "null")
@@ -132,7 +137,7 @@ const createEmbed = async (data, optionFlag = 0) => {
           value: `${tempSpell.tooltip} `,
         })
         .setImage(
-          //"https://d28xe8vt774jo5.cloudfront.net/champion-abilities/{champ}/ability_{champ}_{skill}1.webm"
+          //  "https://d28xe8vt774jo5.cloudfront.net/champion-abilities/{champ}/ability_{champ}_{skill}1.webm"
           "https://media1.giphy.com/media/JOiVbcrColZo1oaXDT/giphy.gif?cid=790b7611b8128278e636447c41aa2f0003df04f4ba6e9e21&rid=giphy.gif&ct=g"
         )
         .setTimestamp()
@@ -154,7 +159,14 @@ const createEmbed = async (data, optionFlag = 0) => {
   return embedReply;
 };
 
-const createButtonRow = (optionFlag = 0) => {
+const createButtonRow = () => {
+  const overviewButtonRow = new MessageActionRow();
+  overviewButtonRow.addComponents(
+    new MessageButton()
+      .setCustomId("O")
+      .setLabel("Overview")
+      .setStyle("SECONDARY")
+  );
   const buttonRow = new MessageActionRow();
   buttonRow.addComponents(
     new MessageButton()
@@ -166,19 +178,20 @@ const createButtonRow = (optionFlag = 0) => {
     new MessageButton().setCustomId("E").setLabel("E").setStyle("SECONDARY"),
     new MessageButton().setCustomId("R").setLabel("R").setStyle("SECONDARY")
   );
-  return buttonRow;
+  return [overviewButtonRow, buttonRow];
 };
 
 //  control what happens depending on what button you pressed
 const buttonLogic = async (interaction, data) => {
-  let time_out = false;
+  //  let time_out = false;
 
   const filter = (i) =>
     i.customId === "Q" ||
     i.customId === "W" ||
     i.customId === "E" ||
     i.customId === "R" ||
-    i.customId === "P";
+    i.customId === "P" ||
+    i.customId === "O";
 
   const collector = interaction.channel.createMessageComponentCollector({
     filter,
@@ -186,21 +199,25 @@ const buttonLogic = async (interaction, data) => {
   });
 
   collector.on("collect", async (i) => {
-    let selectedChoice = "";
+    //  let selectedChoice = "";
+    const embed = await createEmbed(data, i.customId);
+    const [buttonRowOne, buttonRowTwo] = createButtonRow();
     switch (i.customId) {
       case "Q":
       case "W":
       case "E":
       case "R":
       case "P":
+      case "O":
         //    if your selected option != correct definition, just update with a new embed saying you are wrong
         //    this shows the option you picked and the right answer
-        const embed = await createEmbed(data, i.customId);
-        const row = createButtonRow();
         collector.resetTimer();
         console.log("time: ", collector.time);
         //  await i.update({ embeds: [embed] });
-        await i.update({ embeds: [embed], components: [row] });
+        await i.update({
+          embeds: [embed],
+          components: [buttonRowOne, buttonRowTwo],
+        });
         break;
     }
   });
@@ -216,23 +233,75 @@ const buttonLogic = async (interaction, data) => {
 const getChampionNamesArray = (response) => {
   const data = response.data.data;
   const nameArray = [];
-  for (let key of Object.keys(data)) {
+  for (const key of Object.keys(data)) {
     nameArray.push(data[key].name);
   }
   return nameArray;
 };
 
+//  the levenshteinDistance and the similarity was taken from StackOverflow
+//    will probably be changed later for own code
+const levenshteinDistance = (s1, s2) => {
+  s1 = s1.toLowerCase();
+  s2 = s2.toLowerCase();
+
+  const costs = new Array();
+  for (let i = 0; i <= s1.length; i++) {
+    let lastValue = i;
+    for (let j = 0; j <= s2.length; j++) {
+      if (i == 0) {
+        costs[j] = j;
+      } else if (j > 0) {
+        let newValue = costs[j - 1];
+        if (s1.charAt(i - 1) != s2.charAt(j - 1)) {
+          newValue = Math.min(Math.min(newValue, lastValue), costs[j]) + 1;
+        }
+        costs[j - 1] = lastValue;
+        lastValue = newValue;
+      }
+    }
+    if (i > 0) costs[s2.length] = lastValue;
+  }
+  return costs[s2.length];
+};
+
+const similarity = (championName, queryName) => {
+  let long = championName;
+  let short = queryName;
+  if (championName.length < queryName.length) {
+    long = queryName;
+    short = championName;
+  }
+  const long_length = long.length;
+  if (long_length === 0) {
+    return 1.0;
+  }
+  return (
+    (long_length - levenshteinDistance(long, short)) / parseFloat(long_length)
+  );
+};
+
 const getClosestChampName = (nameArray, queryName) => {
-  //simple check if you typed the correct champion name
+  //  simple check if you typed the correct champion name
   //  but first, make the query all lower-case then capitalize the first letter
   const fixedQueryName =
     queryName.toLowerCase()[0].toUpperCase() + queryName.slice(1).toLowerCase();
   if (nameArray.includes(fixedQueryName)) {
     return fixedQueryName;
   }
-  //else try to find the champion name that closest fits
+  //  else try to find the champion name that closest fits
   else {
-    console.log("void");
+    const namePercentage = nameArray.map((champName) => [
+      champName,
+      similarity(champName, queryName),
+    ]);
+
+    namePercentage.sort((name1, name2) => {
+      return name1[1] - name2[1];
+    });
+    namePercentage.reverse();
+    //  console.log(namePercentage);
+    return namePercentage[0][0];
   }
 };
 
@@ -250,7 +319,8 @@ module.exports = {
     ),
   async execute(interaction) {
     try {
-      let championName = await axios
+      let caughtError = false;
+      const championName = await axios
         .get(ddragonURL + "data/en_US/champion.json")
         .then((response) => {
           const nameArray = getChampionNamesArray(response);
@@ -260,16 +330,43 @@ module.exports = {
           );
           return closestName;
         })
-        .catch();
-      let championData = await axios
+        .catch((error) => {
+          console.log(error);
+          caughtError = true;
+        });
+      const championData = await axios
         .get(ddragonURL + "data/en_US/champion/" + championName + ".json")
         .then((response) => response.data.data[championName])
-        .catch();
-      const embed = await createEmbed(championData);
-      const buttonRow = createButtonRow();
-      let message = { embeds: [embed], components: [buttonRow] } || {
-        content: "Pong!",
-      };
+        .catch((error) => {
+          console.log(error);
+          caughtError = true;
+        });
+      let embed;
+      if (!caughtError) {
+        embed = await createEmbed(championData);
+      } else {
+        embed = new MessageEmbed();
+        embed
+          .setDescription("No results")
+          .setTimestamp()
+          .setFooter(
+            `via Data Dragon`,
+            "https://raw.githubusercontent.com/GordonLei/Neco-Arc/main/images/profile.png"
+          );
+      }
+      const [buttonRowOne, buttonRowTwo] = createButtonRow();
+      const message = caughtError
+        ? {
+            embeds: [embed],
+          } || {
+            content: "Pong!",
+          }
+        : {
+            embeds: [embed],
+            components: [buttonRowOne, buttonRowTwo],
+          } || {
+            content: "Pong!",
+          };
       await interaction.reply(message);
       await buttonLogic(interaction, championData);
     } catch (error) {
