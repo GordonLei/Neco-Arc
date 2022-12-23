@@ -3,14 +3,14 @@ const { MessageEmbed, MessageActionRow, MessageButton } = require("discord.js");
 require("dotenv").config();
 //  const riotDevKey = process.env.riotDevKey;
 const axios = require("axios");
-
+const leaguePatch = process.env.leaguePatch;
 //  temporary information
 //  let queryResultNumber = 0;
 //  let maxResults = 0;
 //  let timeout = true;
 const DELETE_QUERY = -1;
 const SAVE_QUERY = -2;
-const ddragonURL = "http://ddragon.leagueoflegends.com/cdn/11.21.1/";
+const ddragonURL = `http://ddragon.leagueoflegends.com/cdn/${leaguePatch}/`;
 
 /*
 const reset = () => {
@@ -51,25 +51,28 @@ const createEmbed = async (data, optionFlag = 0) => {
         .setThumbnail(
           ddragonURL + "img/champion/" + data.name + ".png" || "null"
         )
-        .addFields({
-          name: "Skills",
-          value: `
-              **< P >**: ${data.passive.name || "null"}
-              ${data.passive.description || "null"}
-              
-              **< Q >**: ${data.spells[0].name || "null"}
-              ${data.spells[0].description || "null"}
-              
-              **< W >**: ${data.spells[1].name || "null"}
-              ${data.spells[1].description || "null"}
-              
-              **< E >**: ${data.spells[2].name || "null"}
-              ${data.spells[2].description || "null"}
-              
-              **< R >**: ${data.spells[3].name || "null"}
-              ${data.spells[3].description || "null"}
-            `,
-        })
+        .addFields(
+          {
+            name: `**< P >** ${data.passive.name || "null"}`,
+            value: `${data.passive.description || "null"}`,
+          },
+          {
+            name: `**< Q >** ${data.spells[0].name || "null"}`,
+            value: `${data.spells[0].description || "null"}`,
+          },
+          {
+            name: `**< W >** ${data.spells[1].name || "null"}`,
+            value: `${data.spells[1].description || "null"}`,
+          },
+          {
+            name: `**< E >** ${data.spells[2].name || "null"}`,
+            value: `${data.spells[2].description || "null"}`,
+          },
+          {
+            name: `**< R >** ${data.spells[3].name || "null"}`,
+            value: `${data.spells[3].description || "null"}`,
+          }
+        )
         .setTimestamp()
         .setFooter(
           `via Data Dragon`,
@@ -122,7 +125,7 @@ const createEmbed = async (data, optionFlag = 0) => {
           tempSpell = data.spells[3];
           break;
       }
-
+      console.log(tempSpell.name, tempSpell.tooltip.length);
       embedReply
         .setTitle(data.name || "null")
         .setDescription(data.title || "null")
@@ -316,6 +319,7 @@ module.exports = {
     ),
   async execute(interaction) {
     try {
+      let caughtError = false;
       const championName = await axios
         .get(ddragonURL + "data/en_US/champion.json")
         .then((response) => {
@@ -326,19 +330,43 @@ module.exports = {
           );
           return closestName;
         })
-        .catch();
+        .catch((error) => {
+          console.log(error);
+          caughtError = true;
+        });
       const championData = await axios
         .get(ddragonURL + "data/en_US/champion/" + championName + ".json")
         .then((response) => response.data.data[championName])
-        .catch();
-      const embed = await createEmbed(championData);
+        .catch((error) => {
+          console.log(error);
+          caughtError = true;
+        });
+      let embed;
+      if (!caughtError) {
+        embed = await createEmbed(championData);
+      } else {
+        embed = new MessageEmbed();
+        embed
+          .setDescription("No results")
+          .setTimestamp()
+          .setFooter(
+            `via Data Dragon`,
+            "https://raw.githubusercontent.com/GordonLei/Neco-Arc/main/images/profile.png"
+          );
+      }
       const [buttonRowOne, buttonRowTwo] = createButtonRow();
-      const message = {
-        embeds: [embed],
-        components: [buttonRowOne, buttonRowTwo],
-      } || {
-        content: "Pong!",
-      };
+      const message = caughtError
+        ? {
+            embeds: [embed],
+          } || {
+            content: "Pong!",
+          }
+        : {
+            embeds: [embed],
+            components: [buttonRowOne, buttonRowTwo],
+          } || {
+            content: "Pong!",
+          };
       await interaction.reply(message);
       await buttonLogic(interaction, championData);
     } catch (error) {

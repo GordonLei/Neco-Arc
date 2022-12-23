@@ -3,13 +3,14 @@ const { MessageEmbed } = require("discord.js");
 require("dotenv").config();
 //  const riotDevKey = process.env.riotDevKey;
 const axios = require("axios");
+const leaguePatch = process.env.leaguePatch;
 
 //  temporary information
 //  let queryResultNumber = 0;
 //  let maxResults = 0;
 const DELETE_QUERY = -1;
 const SAVE_QUERY = -2;
-const ddragonURL = "http://ddragon.leagueoflegends.com/cdn/11.21.1/";
+const ddragonURL = `http://ddragon.leagueoflegends.com/cdn/${leaguePatch}/`;
 
 const createEmbed = async (data, optionFlag = 0) => {
   const embedReply = new MessageEmbed();

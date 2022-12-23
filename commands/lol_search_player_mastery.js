@@ -3,9 +3,9 @@ const { MessageEmbed } = require("discord.js");
 require("dotenv").config();
 const riotDevKey = process.env.riotDevKey;
 const axios = require("axios");
-
+const leaguePatch = process.env.leaguePatch;
 //  temporary information
-const ddragonURL = "http://ddragon.leagueoflegends.com/cdn/11.21.1/";
+const ddragonURL = `http://ddragon.leagueoflegends.com/cdn/${leaguePatch}/`;
 
 //   create the embedded message
 const createEmbed = async (infoData, masteryData) => {
